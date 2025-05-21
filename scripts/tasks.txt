@@ -39,13 +39,23 @@
 - [ ] Implement task sorting
 
 ## 5. Keyboard Shortcuts and Navigation
-- [ ] Implement 'q' quick add shortcut
-- [ ] Add Ctrl/Cmd + Enter submit shortcut
-- [ ] Implement 'x' complete task shortcut
-- [ ] Add Shift + x complete all shortcut
-- [ ] Implement up/down navigation
-- [ ] Add keyboard focus management
-- [ ] Create keyboard shortcut help modal
+- [x] Implement 'q' quick add shortcut
+- [x] Add Ctrl/Cmd + Enter submit shortcut
+- [x] Implement 'x' complete task shortcut
+- [x] Add Shift + x complete all shortcut
+- [x] Implement up/down navigation
+- [x] Add keyboard focus management
+- [x] Create keyboard shortcut help modal
+
+## 5.1 Navigation Improvements
+- [ ] Fix task list scrolling behavior
+- [ ] Improve keyboard navigation focus management
+- [ ] Add visual feedback for selected task
+- [ ] Implement smooth scrolling for task navigation
+- [ ] Add focus trap for modals
+- [ ] Improve accessibility of navigation
+- [ ] Add skip links for keyboard users
+- [ ] Implement better focus restoration after modal close
 
 ## 6. Projects and Tags Features
 - [ ] Create ProjectList component

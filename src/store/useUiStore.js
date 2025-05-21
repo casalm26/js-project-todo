@@ -8,7 +8,12 @@ export const useUiStore = create(
     (set) => ({
       // Theme
       isDarkMode: false,
+      isShortcutHelpOpen: false,
+      selectedTaskId: null,
       toggleTheme: () => set((state) => ({ isDarkMode: !state.isDarkMode })),
+      toggleShortcutHelp: () =>
+        set((state) => ({ isShortcutHelpOpen: !state.isShortcutHelpOpen })),
+      setSelectedTaskId: (id) => set({ selectedTaskId: id }),
 
       // UI State
       sidebarOpen: true,
