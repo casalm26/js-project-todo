@@ -16,7 +16,7 @@ export const useUiStore = create(
       setSelectedTaskId: (id) => set({ selectedTaskId: id }),
 
       // UI State
-      sidebarOpen: true,
+      sidebarOpen: false,
       toggleSidebar: () => set((state) => ({ sidebarOpen: !state.sidebarOpen })),
 
       // Filter State

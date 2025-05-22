@@ -104,57 +104,32 @@ export const TaskList = () => {
   }
 
   return (
-    <>
-      <FilterBar>
-        <FilterSelect
-          value={activeFilters.status}
-          onChange={(e) => setFilter('status', e.target.value)}
-          aria-label="Filter by status"
-        >
-          <option value="all">All tasks</option>
-          <option value="completed">Completed</option>
-          <option value="uncompleted">Uncompleted</option>
-        </FilterSelect>
-        <FilterSelect
-          value={activeFilters.project || ''}
-          onChange={(e) => setFilter('project', e.target.value || null)}
-          aria-label="Filter by project"
-        >
-          <option value="">All projects</option>
-          {projects.map((project) => (
-            <option key={project.id} value={project.id}>
-              {project.name}
-            </option>
-          ))}
-        </FilterSelect>
-      </FilterBar>
-      <ListContainer ref={parentRef}>
-        <VirtualList
-          style={{
-            height: `${rowVirtualizer.getTotalSize()}px`,
-          }}
-        >
-          {rowVirtualizer.getVirtualItems().map((virtualRow) => {
-            const task = filteredTasks[virtualRow.index];
-            return (
-              <TaskItemWrapper
-                key={task.id}
-                data-task-id={task.id}
-                style={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  width: '100%',
-                  height: `${virtualRow.size}px`,
-                  transform: `translateY(${virtualRow.start}px)`,
-                }}
-              >
-                <TaskItem task={task} />
-              </TaskItemWrapper>
-            );
-          })}
-        </VirtualList>
-      </ListContainer>
-    </>
+    <ListContainer ref={parentRef}>
+      <VirtualList
+        style={{
+          height: `${rowVirtualizer.getTotalSize()}px`,
+        }}
+      >
+        {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+          const task = filteredTasks[virtualRow.index];
+          return (
+            <TaskItemWrapper
+              key={task.id}
+              data-task-id={task.id}
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: `${virtualRow.size}px`,
+                transform: `translateY(${virtualRow.start}px)`,
+              }}
+            >
+              <TaskItem task={task} />
+            </TaskItemWrapper>
+          );
+        })}
+      </VirtualList>
+    </ListContainer>
   );
 }; 

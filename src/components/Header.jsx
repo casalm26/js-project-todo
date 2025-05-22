@@ -73,9 +73,31 @@ const ThemeToggle = styled.button`
   }
 `;
 
+const HamburgerButton = styled.button`
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  align-items: center;
+  justify-content: center;
+  @media (max-width: 768px) {
+    display: flex;
+  }
+`;
+
+const HamburgerIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="3" y1="12" x2="21" y2="12" />
+    <line x1="3" y1="6" x2="21" y2="6" />
+    <line x1="3" y1="18" x2="21" y2="18" />
+  </svg>
+);
+
 export const Header = () => {
   const { tasks, completeAllTasks } = useTaskStore();
-  const { isDarkMode, toggleTheme } = useUiStore();
+  const { isDarkMode, toggleTheme, toggleSidebar } = useUiStore();
 
   const totalTasks = tasks.length;
   const completedTasks = tasks.filter((task) => task.completed).length;
@@ -100,6 +122,9 @@ export const Header = () => {
         <ThemeToggle onClick={toggleTheme} aria-label="Toggle theme">
           {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
         </ThemeToggle>
+        <HamburgerButton onClick={toggleSidebar} aria-label="Open menu">
+          <HamburgerIcon />
+        </HamburgerButton>
       </Controls>
     </HeaderContainer>
   );

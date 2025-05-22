@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { useTaskStore } from '../store/useTaskStore';
+import { useUiStore } from '../store/useUiStore';
 import { Plus } from './icons/Plus';
 
 const Form = styled.form`
@@ -71,6 +72,7 @@ export const AddTask = () => {
   const [dueDate, setDueDate] = useState('');
   const inputRef = useRef(null);
   const { addTask } = useTaskStore();
+  const { activeFilters } = useUiStore();
 
   useEffect(() => {
     const handleKeyPress = (e) => {
@@ -88,7 +90,7 @@ export const AddTask = () => {
     e.preventDefault();
     if (!title.trim()) return;
 
-    addTask(title.trim(), null, dueDate || null);
+    addTask(title.trim(), activeFilters.project || null, dueDate || null);
     setTitle('');
     setDueDate('');
   };

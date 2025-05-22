@@ -99,12 +99,120 @@ const Progress = styled.div`
   transition: width ${({ theme }) => theme.transitions.default};
 `;
 
+const DrawerOverlay = styled.div`
+  display: none;
+  @media (max-width: 768px) {
+    display: ${({ open }) => (open ? 'block' : 'none')};
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.3);
+    z-index: 1000;
+  }
+`;
+
+const DrawerContainer = styled(Container)`
+  width: 320px;
+  min-width: 320px;
+  max-width: 400px;
+  @media (min-width: 769px) {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 100;
+    box-shadow: 2px 0 16px rgba(0,0,0,0.08);
+    background: ${({ theme }) => theme.colors.surface};
+  }
+  @media (max-width: 768px) {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: auto;
+    height: 100vh;
+    z-index: 1001;
+    transform: translateX(${({ open }) => (open ? '0' : '100%')});
+    transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+    box-shadow: -2px 0 16px rgba(0,0,0,0.16);
+    min-width: 80vw;
+    max-width: 320px;
+    padding: 0;
+  }
+`;
+
+const DrawerHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1rem 0.5rem 1rem;
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
+`;
+
+const CloseButton = styled.button`
+  display: none;
+  @media (max-width: 768px) {
+    display: flex;
+    background: none;
+    border: none;
+    color: ${({ theme }) => theme.colors.textSecondary};
+    font-size: 1.5rem;
+    align-items: center;
+    justify-content: center;
+    padding: 0.25rem 0.5rem;
+    border-radius: ${({ theme }) => theme.borderRadius.sm};
+    cursor: pointer;
+    margin-left: 0.5rem;
+    transition: background 0.2s;
+    &:hover {
+      background: ${({ theme }) => theme.colors.surfaceHover || '#f1f1f1'};
+    }
+  }
+`;
+
+const FilterBar = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  padding: 0 1rem;
+`;
+
+const FilterSelect = styled.select`
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  background-color: ${({ theme }) => theme.colors.background};
+  color: ${({ theme }) => theme.colors.text};
+  font-size: ${({ theme }) => theme.typography.fontSize.sm};
+  margin-bottom: 0.25rem;
+  @media (min-width: 769px) {
+    width: auto;
+    margin-bottom: 0;
+  }
+  &:focus {
+    outline: none;
+    border-color: ${({ theme }) => theme.colors.primary};
+  }
+`;
+
+const Divider = styled.hr`
+  border: none;
+  border-top: 1px solid ${({ theme }) => theme.colors.border};
+  margin: 0 0 1rem 0;
+`;
+
 export const ProjectList = () => {
   const { projects, tasks, addProject } = useTaskStore();
-  const { activeFilters, setFilter } = useUiStore();
+  const { activeFilters, setFilter, sidebarOpen, toggleSidebar } = useUiStore();
 
   const handleProjectClick = (projectId) => {
     setFilter('project', projectId);
+    if (window.innerWidth <= 768) toggleSidebar();
   };
 
   const handleAddProject = () => {
@@ -121,38 +229,68 @@ export const ProjectList = () => {
     return (completedTasks / projectTasks.length) * 100;
   };
 
-  return (
-    <Container>
-      <Header>
-        <Title>Projects</Title>
-        <AddButton onClick={handleAddProject} aria-label="Add new project">
-          <Plus size={16} />
-        </AddButton>
-      </Header>
-      <ProjectListContainer>
-        {projects.map((project) => {
-          const projectTasks = tasks.filter(
-            (task) => task.projectId === project.id
-          );
-          const progress = getProjectProgress(project.id);
-          const isActive = activeFilters.project === project.id;
+  // Overlay click closes drawer
+  const handleOverlayClick = () => {
+    if (sidebarOpen) toggleSidebar();
+  };
 
-          return (
-            <ProjectItem key={project.id}>
-              <ProjectButton
-                onClick={() => handleProjectClick(project.id)}
-                active={isActive}
-              >
-                <ProjectName>{project.name}</ProjectName>
-                <ProjectCount>{projectTasks.length}</ProjectCount>
-              </ProjectButton>
-              <ProgressBar>
-                <Progress progress={progress} />
-              </ProgressBar>
-            </ProjectItem>
-          );
-        })}
-      </ProjectListContainer>
-    </Container>
+  return (
+    <>
+      <DrawerOverlay open={sidebarOpen} onClick={handleOverlayClick} />
+      <DrawerContainer open={sidebarOpen}>
+        <DrawerHeader>
+          <Title>Projects</Title>
+          <CloseButton onClick={toggleSidebar} aria-label="Close menu">×</CloseButton>
+          <AddButton onClick={handleAddProject} aria-label="Add new project">
+            <Plus size={16} />
+          </AddButton>
+        </DrawerHeader>
+        <FilterBar>
+          <FilterSelect
+            value={activeFilters.status}
+            onChange={(e) => setFilter('status', e.target.value)}
+            aria-label="Filter by status"
+          >
+            <option value="all">All tasks</option>
+            <option value="completed">Completed</option>
+            <option value="uncompleted">Uncompleted</option>
+          </FilterSelect>
+        </FilterBar>
+        <Divider />
+        <ProjectListContainer>
+          <ProjectItem>
+            <ProjectButton
+              onClick={() => handleProjectClick(null)}
+              active={!activeFilters.project}
+            >
+              <ProjectName>All tasks</ProjectName>
+              <ProjectCount>{tasks.length}</ProjectCount>
+            </ProjectButton>
+          </ProjectItem>
+          {projects.map((project) => {
+            const projectTasks = tasks.filter(
+              (task) => task.projectId === project.id
+            );
+            const progress = getProjectProgress(project.id);
+            const isActive = activeFilters.project === project.id;
+
+            return (
+              <ProjectItem key={project.id}>
+                <ProjectButton
+                  onClick={() => handleProjectClick(project.id)}
+                  active={isActive}
+                >
+                  <ProjectName>{project.name}</ProjectName>
+                  <ProjectCount>{projectTasks.length}</ProjectCount>
+                </ProjectButton>
+                <ProgressBar>
+                  <Progress progress={progress} />
+                </ProgressBar>
+              </ProjectItem>
+            );
+          })}
+        </ProjectListContainer>
+      </DrawerContainer>
+    </>
   );
 }; 

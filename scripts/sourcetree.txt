@@ -1,0 +1,54 @@
+./
+├── .git/
+├── .gitignore
+├── .DS_Store
+├── dist/
+│   ├── assets/
+│   ├── index.html
+│   └── vite.svg
+├── index.html
+├── jest.config.js
+├── node_modules/
+├── package-lock.json
+├── package.json
+├── pull_request_template.md
+├── public/
+│   └── favicon.svg
+├── README.md
+├── scripts/
+│   ├── .DS_Store
+│   ├── Backtrack.txt
+│   └── sourcetree.txt
+├── src/
+│   ├── App.jsx
+│   ├── components/
+│   │   ├── AddTask.jsx
+│   │   ├── EmptyState.jsx
+│   │   ├── Header.jsx
+│   │   ├── ProjectList.jsx
+│   │   ├── ShortcutHelp.jsx
+│   │   ├── TaskItem.jsx
+│   │   ├── TaskList.jsx
+│   │   └── icons/
+│   │       ├── Check.jsx
+│   │       ├── Moon.jsx
+│   │       ├── Plus.jsx
+│   │       ├── Sun.jsx
+│   │       └── Trash.jsx
+│   ├── hooks/
+│   │   └── useKeyboardShortcuts.js
+│   ├── index.css
+│   ├── main.jsx
+│   ├── store/
+│   │   ├── useTaskStore.js
+│   │   └── useUiStore.js
+│   ├── styles/
+│   │   ├── GlobalStyles.js
+│   │   └── theme.js
+│   ├── types/
+│   │   └── index.js
+│   └── utils/
+│       └── migration.js
+│   └── setupTests.js
+├── vite.config.js
+└── eslint.config.js 
