@@ -21,5 +21,7 @@ Stretch goals (tackle only after §6 is green)
 	3.	Dark / light mode – CSS variables + toggle, persist in localStorage.
 	4.	Persist todos – serialise store → localStorage; hydrate on load.
 	5.	Due date field in form + overdue styling.
-	6.	Filters (completed, uncompleted, createdAfter).
+	6.	Filters (completed, uncompleted, project)
+		- TODO: Review filter and sorting options for usability and completeness
 	7.	Tags & projects (extend model, add filter UI).
+		- TODO: Review project logic and workflow for improvements
