@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { useTaskStore } from '../store/useTaskStore';
 import { Check } from './icons/Check';
 import { Trash } from './icons/Trash';
-import { format } from 'date-fns';
+import { formatDistanceToNow } from 'date-fns';
 
 const ItemContainer = styled.div`
   display: flex;
@@ -45,9 +45,9 @@ const Title = styled.h3`
   margin: 0;
   font-size: 1rem;
   font-weight: 500;
-  color: ${({ theme, completed }) =>
-    completed ? theme.colors.textSecondary : theme.colors.text};
-  text-decoration: ${({ completed }) => (completed ? 'line-through' : 'none')};
+  color: ${({ theme, $completed }) =>
+    $completed ? theme.colors.textSecondary : theme.colors.text};
+  text-decoration: ${({ $completed }) => ($completed ? 'line-through' : 'none')};
 `;
 
 const Meta = styled.div`
@@ -57,6 +57,13 @@ const Meta = styled.div`
   margin-top: 0.25rem;
   font-size: 0.875rem;
   color: ${({ theme }) => theme.colors.textSecondary};
+  flex-wrap: wrap;
+`;
+
+const MetaItem = styled.span`
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
 `;
 
 const TagList = styled.div`
@@ -103,7 +110,7 @@ const ActionButton = styled.button`
 
 export const TaskItem = ({ task }) => {
   const { toggleTask, deleteTask } = useTaskStore();
-
+  console.log('TaskItem task:', task);
   return (
     <ItemContainer>
       <Checkbox
@@ -113,12 +120,22 @@ export const TaskItem = ({ task }) => {
         {task.completed && <Check size={14} />}
       </Checkbox>
       <Content>
-        <Title completed={task.completed}>{task.title}</Title>
+        <Title $completed={task.completed}>{task.title}</Title>
         <Meta>
           {task.dueDate && (
-            <time dateTime={task.dueDate}>
-              {new Date(task.dueDate).toLocaleDateString()}
-            </time>
+            <MetaItem>
+              <time dateTime={task.dueDate}>
+                {new Date(task.dueDate).toLocaleDateString(undefined, {
+                  day: '2-digit',
+                  month: '2-digit'
+                })}
+              </time>
+            </MetaItem>
+          )}
+          {task.createdAt && (
+            <MetaItem>
+              {`created ${formatDistanceToNow(new Date(task.createdAt), { addSuffix: true })}`}
+            </MetaItem>
           )}
           {task.tags && task.tags.length > 0 && (
             <TagList>

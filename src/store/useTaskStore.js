@@ -12,16 +12,16 @@ export const useTaskStore = create(
       addTask: (title, projectId = null, dueDate = null) =>
         set((state) => ({
           tasks: [
-            ...state.tasks,
             {
               id: uuidv4(),
               title,
               completed: false,
               createdAt: new Date().toISOString(),
               projectId,
-              dueDate,
+              dueDate: dueDate ? new Date(dueDate).toISOString() : null,
               tags: [],
             },
+            ...state.tasks,
           ],
         })),
       toggleTask: (id) =>

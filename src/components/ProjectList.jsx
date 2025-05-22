@@ -100,7 +100,7 @@ const Progress = styled.div`
 `;
 
 export const ProjectList = () => {
-  const { projects, tasks, addProject, setActiveProject } = useTaskStore();
+  const { projects, tasks, addProject } = useTaskStore();
   const { activeFilters, setFilter } = useUiStore();
 
   const handleProjectClick = (projectId) => {

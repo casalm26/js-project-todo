@@ -15,6 +15,10 @@ const VirtualList = styled.div`
   width: 100%;
 `;
 
+const TaskItemWrapper = styled.div`
+  width: 100%;
+`;
+
 const EmptyState = styled.div`
   display: flex;
   flex-direction: column;
@@ -33,16 +37,18 @@ export const TaskList = () => {
   const rowVirtualizer = useVirtualizer({
     count: tasks.length,
     getScrollElement: () => parentRef.current,
-    estimateSize: () => 48, // Estimated height of each task item
-    overscan: 5,
+    estimateSize: () => 80, // Increased height to accommodate meta information
+    overscan: 10, // Increased overscan for smoother scrolling
   });
 
   if (tasks.length === 0) {
     return (
-      <EmptyState>
-        <h2>No tasks yet</h2>
-        <p>Press Q to add your first task</p>
-      </EmptyState>
+      <ListContainer>
+        <EmptyState>
+          <h2>No tasks yet</h2>
+          <p>Press Q to add your first task</p>
+        </EmptyState>
+      </ListContainer>
     );
   }
 
@@ -56,8 +62,9 @@ export const TaskList = () => {
         {rowVirtualizer.getVirtualItems().map((virtualRow) => {
           const task = tasks[virtualRow.index];
           return (
-            <div
+            <TaskItemWrapper
               key={task.id}
+              data-task-id={task.id}
               style={{
                 position: 'absolute',
                 top: 0,
@@ -68,7 +75,7 @@ export const TaskList = () => {
               }}
             >
               <TaskItem task={task} />
-            </div>
+            </TaskItemWrapper>
           );
         })}
       </VirtualList>
