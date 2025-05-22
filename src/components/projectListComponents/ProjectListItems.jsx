@@ -8,7 +8,7 @@ const ProjectListContainer = styled.ul`
 `;
 
 const ProgressBar = styled.div`
-  height: 2px;
+  height: 0.125rem;
   background-color: ${({ theme }) => theme.colors.border};
   margin-top: 0.25rem;
   border-radius: ${({ theme }) => theme.borderRadius.full};

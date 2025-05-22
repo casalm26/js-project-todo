@@ -27,10 +27,10 @@ const Title = styled.h2`
 `;
 
 const Description = styled.p`
-  font-size: ${({ theme }) => theme.typography.fontSize.base};
-  max-width: 400px;
+  font-size: 1rem;
+  max-width: 25rem;
   margin: 0 auto;
-  color: ${({ theme }) => theme.colors.text};
+  color: #181818;
   font-weight: 500;
 `;
 

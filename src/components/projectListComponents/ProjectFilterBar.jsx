@@ -11,11 +11,11 @@ const FilterBar = styled.div`
 const FilterSelect = styled.select`
   width: 100%;
   padding: 0.5rem;
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  border: 0.0625rem solid ${({ theme }) => theme.colors.border};
+  border-radius: 0.25rem;
   background-color: ${({ theme }) => theme.colors.background};
   color: ${({ theme }) => theme.colors.text};
-  font-size: ${({ theme }) => theme.typography.fontSize.sm};
+  font-size: 0.875rem;
   margin-bottom: 0.25rem;
   @media (min-width: 769px) {
     width: auto;

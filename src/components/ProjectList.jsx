@@ -20,8 +20,8 @@ const DrawerOverlay = styled.div`
 `;
 
 const DrawerContainer = styled.div`
-  width: 280px;
-  min-width: 280px;
+  width: 17.5rem;
+  min-width: 17.5rem;
   height: 100vh;
   background: ${({ theme }) => theme.colors.surface};
   padding: 0;
@@ -29,7 +29,7 @@ const DrawerContainer = styled.div`
     position: static;
     z-index: 100;
     box-shadow: none;
-    border-right: 1px solid ${({ theme }) => theme.colors.border};
+    border-right: 0.0625rem solid ${({ theme }) => theme.colors.border};
   }
   @media (max-width: 768px) {
     position: fixed;
@@ -40,16 +40,16 @@ const DrawerContainer = styled.div`
     z-index: 1001;
     transform: translateX(${({ open }) => (open ? '0' : '100%')});
     transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
-    box-shadow: -2px 0 16px rgba(0,0,0,0.16);
+    box-shadow: -0.125rem 0 1rem rgba(0,0,0,0.16);
     min-width: 80vw;
-    max-width: 320px;
+    max-width: 20rem;
     padding: 0;
   }
 `;
 
 const Divider = styled.hr`
   border: none;
-  border-top: 1px solid ${({ theme }) => theme.colors.border};
+  border-top: 0.0625rem solid ${({ theme }) => theme.colors.border};
   margin: 0 0 1rem 0;
 `;
 
