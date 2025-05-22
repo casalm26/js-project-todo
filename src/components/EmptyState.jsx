@@ -31,6 +31,7 @@ const Description = styled.p`
   max-width: 400px;
   margin: 0 auto;
   color: ${({ theme }) => theme.colors.text};
+  font-weight: 500;
 `;
 
 const KeyboardShortcut = styled.kbd`

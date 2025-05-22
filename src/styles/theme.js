@@ -5,7 +5,7 @@ export const lightTheme = {
     background: '#f8f9fa',
     surface: '#ffffff',
     surfaceHover: '#f8f9fa',
-    text: '#212529',
+    text: '#181818',
     textSecondary: '#6c757d',
     border: '#dee2e6',
     error: '#dc3545',
