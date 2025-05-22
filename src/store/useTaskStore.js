@@ -1,124 +1,115 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { createTask } from '../types';
+import { v4 as uuidv4 } from 'uuid';
 
 const STORAGE_KEY = 'taskify-store';
 
 export const useTaskStore = create(
   persist(
     (set, get) => ({
+      // Tasks
       tasks: [],
+      addTask: (title, projectId = null, dueDate = null) =>
+        set((state) => ({
+          tasks: [
+            ...state.tasks,
+            {
+              id: uuidv4(),
+              title,
+              completed: false,
+              createdAt: new Date().toISOString(),
+              projectId,
+              dueDate,
+              tags: [],
+            },
+          ],
+        })),
+      toggleTask: (id) =>
+        set((state) => ({
+          tasks: state.tasks.map((task) =>
+            task.id === id ? { ...task, completed: !task.completed } : task
+          ),
+        })),
+      deleteTask: (id) =>
+        set((state) => ({
+          tasks: state.tasks.filter((task) => task.id !== id),
+        })),
+      completeAllTasks: () =>
+        set((state) => ({
+          tasks: state.tasks.map((task) => ({ ...task, completed: true })),
+        })),
+
+      // Projects
       projects: [],
-      tags: [],
-
-      // Task operations
-      addTask: (title, projectId = null, dueDate = null) => {
-        const newTask = createTask(title, projectId, dueDate);
+      addProject: (name) =>
         set((state) => ({
-          tasks: [...state.tasks, newTask],
-        }));
-        return newTask;
-      },
-
-      updateTask: (taskId, updates) => {
+          projects: [
+            ...state.projects,
+            {
+              id: uuidv4(),
+              name,
+              createdAt: new Date().toISOString(),
+            },
+          ],
+        })),
+      deleteProject: (id) =>
         set((state) => ({
+          projects: state.projects.filter((project) => project.id !== id),
           tasks: state.tasks.map((task) =>
-            task.id === taskId ? { ...task, ...updates } : task
+            task.projectId === id ? { ...task, projectId: null } : task
           ),
-        }));
-      },
-
-      deleteTask: (taskId) => {
-        set((state) => ({
-          tasks: state.tasks.filter((task) => task.id !== taskId),
-        }));
-      },
-
-      toggleTaskCompletion: (taskId) => {
-        set((state) => ({
-          tasks: state.tasks.map((task) =>
-            task.id === taskId
-              ? { ...task, completed: !task.completed }
-              : task
-          ),
-        }));
-      },
-
-      // Project operations
-      addProject: (name, description = '') => {
-        const newProject = createProject(name, description);
-        set((state) => ({
-          projects: [...state.projects, newProject],
-        }));
-        return newProject;
-      },
-
-      updateProject: (projectId, updates) => {
+        })),
+      updateProject: (id, name) =>
         set((state) => ({
           projects: state.projects.map((project) =>
-            project.id === projectId ? { ...project, ...updates } : project
+            project.id === id ? { ...project, name } : project
           ),
-        }));
-      },
+        })),
 
-      deleteProject: (projectId) => {
+      // Tags
+      tags: [],
+      addTag: (name, color) =>
         set((state) => ({
-          projects: state.projects.filter((project) => project.id !== projectId),
-          tasks: state.tasks.map((task) =>
-            task.projectId === projectId
-              ? { ...task, projectId: null }
-              : task
-          ),
-        }));
-      },
-
-      // Tag operations
-      addTag: (name, color = '#000000') => {
-        const newTag = createTag(name, color);
+          tags: [
+            ...state.tags,
+            {
+              id: uuidv4(),
+              name,
+              color,
+              createdAt: new Date().toISOString(),
+            },
+          ],
+        })),
+      deleteTag: (id) =>
         set((state) => ({
-          tags: [...state.tags, newTag],
-        }));
-        return newTag;
-      },
-
-      updateTag: (tagId, updates) => {
-        set((state) => ({
-          tags: state.tags.map((tag) =>
-            tag.id === tagId ? { ...tag, ...updates } : tag
-          ),
-        }));
-      },
-
-      deleteTag: (tagId) => {
-        set((state) => ({
-          tags: state.tags.filter((tag) => tag.id !== tagId),
+          tags: state.tags.filter((tag) => tag.id !== id),
           tasks: state.tasks.map((task) => ({
             ...task,
-            tags: task.tags.filter((id) => id !== tagId),
+            tags: task.tags.filter((tagId) => tagId !== id),
           })),
-        }));
-      },
-
-      // Task-Tag operations
-      addTagToTask: (taskId, tagId) => {
+        })),
+      updateTag: (id, name, color) =>
+        set((state) => ({
+          tags: state.tags.map((tag) =>
+            tag.id === id ? { ...tag, name, color } : tag
+          ),
+        })),
+      addTagToTask: (taskId, tagId) =>
         set((state) => ({
           tasks: state.tasks.map((task) =>
             task.id === taskId
               ? { ...task, tags: [...task.tags, tagId] }
               : task
           ),
-        }));
-      },
-
-      removeTagFromTask: (taskId, tagId) => {
+        })),
+      removeTagFromTask: (taskId, tagId) =>
         set((state) => ({
           tasks: state.tasks.map((task) =>
             task.id === taskId
               ? { ...task, tags: task.tags.filter((id) => id !== tagId) }
               : task
           ),
-        }));
-      },
+        })),
 
       // Selectors
       getTaskById: (taskId) => {
