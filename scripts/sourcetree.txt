@@ -1,24 +1,21 @@
+Giong through the sourcetree as a reference, we're going to do some refatoring for each file in here. The focus should be to make the code cleaner, more readable and functional. All code that isn't used or necessary should be deleted. I want you to start at the top of the list. If you come across a file that's not necessary to clean up, move on to the next one instead. 
+
+Questions to review for each file: 
+1. Is this file used in the project?
+2. Is there code in the file that's unnecessary?
+3. Is there code that could be written in a simpler way in the file? 
+4. Is there a component that could be broken out of the file in order to make it more maintainable? 
+
+
 ./
-├── .git/
-├── .gitignore
-├── .DS_Store
 ├── dist/
 │   ├── assets/
 │   ├── index.html
 │   └── vite.svg
 ├── index.html
 ├── jest.config.js
-├── node_modules/
-├── package-lock.json
-├── package.json
-├── pull_request_template.md
 ├── public/
 │   └── favicon.svg
-├── README.md
-├── scripts/
-│   ├── .DS_Store
-│   ├── Backtrack.txt
-│   └── sourcetree.txt
 ├── src/
 │   ├── App.jsx
 │   ├── components/
@@ -49,6 +46,4 @@
 │   │   └── index.js
 │   └── utils/
 │       └── migration.js
-│   └── setupTests.js
-├── vite.config.js
 └── eslint.config.js 

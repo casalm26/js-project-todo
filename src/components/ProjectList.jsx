@@ -1,103 +1,9 @@
 import styled from 'styled-components';
 import { useTaskStore } from '../store/useTaskStore';
 import { useUiStore } from '../store/useUiStore';
-import { Plus } from './icons/Plus';
-
-const Container = styled.div`
-  padding: 1rem;
-  background-color: ${({ theme }) => theme.colors.surface};
-  border-right: 1px solid ${({ theme }) => theme.colors.border};
-  width: 250px;
-  height: 100%;
-  overflow-y: auto;
-`;
-
-const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-`;
-
-const Title = styled.h2`
-  font-size: 1rem;
-  font-weight: 600;
-  color: ${({ theme }) => theme.colors.text};
-  margin: 0;
-`;
-
-const AddButton = styled.button`
-  background: none;
-  border: none;
-  color: ${({ theme }) => theme.colors.textSecondary};
-  cursor: pointer;
-  padding: 0.5rem;
-  border-radius: ${({ theme }) => theme.borderRadius.sm};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: color ${({ theme }) => theme.transitions.default};
-
-  &:hover {
-    color: ${({ theme }) => theme.colors.text};
-  }
-`;
-
-const ProjectListContainer = styled.ul`
-  list-style: none;
-  padding: 0;
-  margin: 0;
-`;
-
-const ProjectItem = styled.li`
-  margin-bottom: 0.5rem;
-`;
-
-const ProjectButton = styled.button`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.5rem;
-  border: none;
-  background: none;
-  color: ${({ theme, active }) =>
-    active ? theme.colors.primary : theme.colors.text};
-  cursor: pointer;
-  border-radius: ${({ theme }) => theme.borderRadius.sm};
-  transition: all ${({ theme }) => theme.transitions.default};
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.background};
-  }
-`;
-
-const ProjectName = styled.span`
-  font-size: 0.875rem;
-`;
-
-const ProjectCount = styled.span`
-  font-size: 0.75rem;
-  color: ${({ theme }) => theme.colors.textSecondary};
-  background-color: ${({ theme }) => theme.colors.background};
-  padding: 0.125rem 0.375rem;
-  border-radius: ${({ theme }) => theme.borderRadius.full};
-`;
-
-const ProgressBar = styled.div`
-  height: 2px;
-  background-color: ${({ theme }) => theme.colors.border};
-  margin-top: 0.25rem;
-  border-radius: ${({ theme }) => theme.borderRadius.full};
-  overflow: hidden;
-`;
-
-const Progress = styled.div`
-  height: 100%;
-  background-color: ${({ theme }) => theme.colors.primary};
-  width: ${({ progress }) => `${progress}%`};
-  transition: width ${({ theme }) => theme.transitions.default};
-`;
+import { ProjectListHeader } from './projectListComponents/ProjectListHeader';
+import { ProjectFilterBar } from './projectListComponents/ProjectFilterBar';
+import { ProjectListItems } from './projectListComponents/ProjectListItems';
 
 const DrawerOverlay = styled.div`
   display: none;
@@ -113,7 +19,7 @@ const DrawerOverlay = styled.div`
   }
 `;
 
-const DrawerContainer = styled(Container)`
+const DrawerContainer = styled.div`
   width: 320px;
   min-width: 320px;
   max-width: 400px;
@@ -139,64 +45,6 @@ const DrawerContainer = styled(Container)`
     min-width: 80vw;
     max-width: 320px;
     padding: 0;
-  }
-`;
-
-const DrawerHeader = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1rem 1rem 0.5rem 1rem;
-  @media (max-width: 768px) {
-    padding: 1rem;
-  }
-`;
-
-const CloseButton = styled.button`
-  display: none;
-  @media (max-width: 768px) {
-    display: flex;
-    background: none;
-    border: none;
-    color: ${({ theme }) => theme.colors.textSecondary};
-    font-size: 1.5rem;
-    align-items: center;
-    justify-content: center;
-    padding: 0.25rem 0.5rem;
-    border-radius: ${({ theme }) => theme.borderRadius.sm};
-    cursor: pointer;
-    margin-left: 0.5rem;
-    transition: background 0.2s;
-    &:hover {
-      background: ${({ theme }) => theme.colors.surfaceHover || '#f1f1f1'};
-    }
-  }
-`;
-
-const FilterBar = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  margin-bottom: 1rem;
-  padding: 0 1rem;
-`;
-
-const FilterSelect = styled.select`
-  width: 100%;
-  padding: 0.5rem;
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.borderRadius.sm};
-  background-color: ${({ theme }) => theme.colors.background};
-  color: ${({ theme }) => theme.colors.text};
-  font-size: ${({ theme }) => theme.typography.fontSize.sm};
-  margin-bottom: 0.25rem;
-  @media (min-width: 769px) {
-    width: auto;
-    margin-bottom: 0;
-  }
-  &:focus {
-    outline: none;
-    border-color: ${({ theme }) => theme.colors.primary};
   }
 `;
 
@@ -238,58 +86,19 @@ export const ProjectList = () => {
     <>
       <DrawerOverlay open={sidebarOpen} onClick={handleOverlayClick} />
       <DrawerContainer open={sidebarOpen}>
-        <DrawerHeader>
-          <Title>Projects</Title>
-          <CloseButton onClick={toggleSidebar} aria-label="Close menu">×</CloseButton>
-          <AddButton onClick={handleAddProject} aria-label="Add new project">
-            <Plus size={16} />
-          </AddButton>
-        </DrawerHeader>
-        <FilterBar>
-          <FilterSelect
-            value={activeFilters.status}
-            onChange={(e) => setFilter('status', e.target.value)}
-            aria-label="Filter by status"
-          >
-            <option value="all">All tasks</option>
-            <option value="completed">Completed</option>
-            <option value="uncompleted">Uncompleted</option>
-          </FilterSelect>
-        </FilterBar>
+        <ProjectListHeader onAdd={handleAddProject} onClose={toggleSidebar} />
+        <ProjectFilterBar
+          status={activeFilters.status}
+          setStatus={(status) => setFilter('status', status)}
+        />
         <Divider />
-        <ProjectListContainer>
-          <ProjectItem>
-            <ProjectButton
-              onClick={() => handleProjectClick(null)}
-              active={!activeFilters.project}
-            >
-              <ProjectName>All tasks</ProjectName>
-              <ProjectCount>{tasks.length}</ProjectCount>
-            </ProjectButton>
-          </ProjectItem>
-          {projects.map((project) => {
-            const projectTasks = tasks.filter(
-              (task) => task.projectId === project.id
-            );
-            const progress = getProjectProgress(project.id);
-            const isActive = activeFilters.project === project.id;
-
-            return (
-              <ProjectItem key={project.id}>
-                <ProjectButton
-                  onClick={() => handleProjectClick(project.id)}
-                  active={isActive}
-                >
-                  <ProjectName>{project.name}</ProjectName>
-                  <ProjectCount>{projectTasks.length}</ProjectCount>
-                </ProjectButton>
-                <ProgressBar>
-                  <Progress progress={progress} />
-                </ProgressBar>
-              </ProjectItem>
-            );
-          })}
-        </ProjectListContainer>
+        <ProjectListItems
+          projects={projects}
+          tasks={tasks}
+          activeProject={activeFilters.project}
+          onProjectClick={handleProjectClick}
+          getProjectProgress={getProjectProgress}
+        />
       </DrawerContainer>
     </>
   );
