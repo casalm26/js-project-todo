@@ -11,6 +11,13 @@ const Form = styled.form`
   padding: ${({ theme }) => theme.spacing.md};
   background-color: ${({ theme }) => theme.colors.surface};
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  @media (max-width: 48rem) {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: 1fr 1fr;
+    gap: 0.5rem;
+    align-items: center;
+  }
 `;
 
 const Input = styled.input`
@@ -21,12 +28,14 @@ const Input = styled.input`
   background-color: ${({ theme }) => theme.colors.background};
   color: ${({ theme }) => theme.colors.text};
   font-size: ${({ theme }) => theme.typography.fontSize.base};
-
+  @media (max-width: 48rem) {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+  }
   &:focus {
     outline: none;
     border-color: ${({ theme }) => theme.colors.primary};
   }
-
   &::placeholder {
     color: ${({ theme }) => theme.colors.textSecondary};
   }
@@ -39,7 +48,10 @@ const DateInput = styled.input`
   background-color: ${({ theme }) => theme.colors.background};
   color: ${({ theme }) => theme.colors.text};
   font-size: ${({ theme }) => theme.typography.fontSize.sm};
-
+  @media (max-width: 48rem) {
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+  }
   &:focus {
     outline: none;
     border-color: ${({ theme }) => theme.colors.primary};
@@ -56,11 +68,17 @@ const AddButton = styled.button`
   background-color: ${({ theme }) => theme.colors.primary};
   color: white;
   transition: background-color ${({ theme }) => theme.transitions.default};
-
+  grid-row: 1 / span 2;
+  grid-column: 2 / 3;
+  align-self: center;
+  @media (min-width: 48rem) {
+    grid-row: auto;
+    grid-column: auto;
+    align-self: auto;
+  }
   &:hover {
     background-color: ${({ theme }) => theme.colors.primaryHover};
   }
-
   &:disabled {
     background-color: ${({ theme }) => theme.colors.border};
     cursor: not-allowed;

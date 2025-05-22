@@ -25,11 +25,12 @@ const DrawerContainer = styled.div`
   height: 100vh;
   background: ${({ theme }) => theme.colors.surface};
   padding: 0;
+  border-right: none;
   @media (min-width: 769px) {
     position: static;
     z-index: 100;
     box-shadow: none;
-    border-right: 0.0625rem solid ${({ theme }) => theme.colors.border};
+    border-right: none;
   }
   @media (max-width: 768px) {
     position: fixed;
@@ -44,6 +45,7 @@ const DrawerContainer = styled.div`
     min-width: 80vw;
     max-width: 20rem;
     padding: 0;
+    border-right: none;
   }
 `;
 
