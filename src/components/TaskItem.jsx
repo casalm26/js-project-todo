@@ -3,6 +3,7 @@ import { useTaskStore } from '../store/useTaskStore';
 import { Check } from './icons/Check';
 import { Trash } from './icons/Trash';
 import { formatDistanceToNow } from 'date-fns';
+import { isPast, startOfDay } from 'date-fns';
 
 const ItemContainer = styled.div`
   display: flex;
@@ -108,9 +109,17 @@ const ActionButton = styled.button`
   }
 `;
 
+const DueDate = styled(MetaItem)`
+  color: ${({ theme, $isOverdue }) => 
+    $isOverdue ? theme.colors.error : theme.colors.textSecondary};
+  font-weight: ${({ $isOverdue }) => ($isOverdue ? '500' : 'normal')};
+`;
+
 export const TaskItem = ({ task }) => {
   const { toggleTask, deleteTask } = useTaskStore();
-  console.log('TaskItem task:', task);
+  
+  const isOverdue = task.dueDate && isPast(startOfDay(new Date(task.dueDate))) && !task.completed;
+
   return (
     <ItemContainer>
       <Checkbox
@@ -123,14 +132,15 @@ export const TaskItem = ({ task }) => {
         <Title $completed={task.completed}>{task.title}</Title>
         <Meta>
           {task.dueDate && (
-            <MetaItem>
+            <DueDate $isOverdue={isOverdue}>
               <time dateTime={task.dueDate}>
                 {new Date(task.dueDate).toLocaleDateString(undefined, {
                   day: '2-digit',
                   month: '2-digit'
                 })}
               </time>
-            </MetaItem>
+              {isOverdue && ' (overdue)'}
+            </DueDate>
           )}
           {task.createdAt && (
             <MetaItem>
