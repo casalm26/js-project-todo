@@ -20,17 +20,16 @@ const DrawerOverlay = styled.div`
 `;
 
 const DrawerContainer = styled.div`
-  width: 320px;
-  min-width: 320px;
-  max-width: 400px;
+  width: 280px;
+  min-width: 280px;
+  height: 100vh;
+  background: ${({ theme }) => theme.colors.surface};
+  padding: 0;
   @media (min-width: 769px) {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100vh;
+    position: static;
     z-index: 100;
-    box-shadow: 2px 0 16px rgba(0,0,0,0.08);
-    background: ${({ theme }) => theme.colors.surface};
+    box-shadow: none;
+    border-right: 1px solid ${({ theme }) => theme.colors.border};
   }
   @media (max-width: 768px) {
     position: fixed;

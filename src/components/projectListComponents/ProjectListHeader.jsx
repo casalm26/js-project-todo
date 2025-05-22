@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 import { Plus } from '../icons/Plus';
+import { Check } from '../icons/Check';
+import { useTaskStore } from '../../store/useTaskStore';
 
 const DrawerHeader = styled.div`
   display: flex;
@@ -56,12 +58,51 @@ const AddButton = styled.button`
   }
 `;
 
-export const ProjectListHeader = ({ onAdd, onClose }) => (
-  <DrawerHeader>
-    <Title>Projects</Title>
-    <CloseButton onClick={onClose} aria-label="Close menu">×</CloseButton>
-    <AddButton onClick={onAdd} aria-label="Add new project">
-      <Plus size={16} />
-    </AddButton>
-  </DrawerHeader>
-); 
+const CompleteAllButton = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  background: none;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  color: ${({ theme }) => theme.colors.textSecondary};
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all ${({ theme }) => theme.transitions.default};
+  margin-left: 0.5rem;
+  &:hover {
+    color: ${({ theme }) => theme.colors.text};
+    border-color: ${({ theme }) => theme.colors.text};
+  }
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+`;
+
+export const ProjectListHeader = ({ onAdd, onClose }) => {
+  const { tasks, completeAllTasks } = useTaskStore();
+  const openTasks = tasks.filter((task) => !task.completed).length;
+  const hasIncompleteTasks = openTasks > 0;
+
+  return (
+    <DrawerHeader>
+      <Title>Projects</Title>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <CompleteAllButton
+          onClick={completeAllTasks}
+          disabled={!hasIncompleteTasks}
+          aria-label="Complete all tasks"
+        >
+          <Check size={14} />
+          Complete all
+        </CompleteAllButton>
+        <AddButton onClick={onAdd} aria-label="Add new project">
+          <Plus size={16} />
+        </AddButton>
+        <CloseButton onClick={onClose} aria-label="Close menu">×</CloseButton>
+      </div>
+    </DrawerHeader>
+  );
+}; 

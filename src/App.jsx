@@ -22,9 +22,6 @@ const AppContainer = styled.div`
 const Main = styled.main`
   flex: 1;
   display: flex;
-  @media (min-width: 769px) {
-    margin-left: 320px;
-  }
 `;
 
 const Content = styled.div`

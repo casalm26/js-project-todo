@@ -108,17 +108,6 @@ export const Header = () => {
     <HeaderContainer>
       <Logo aria-label="Taskify home">Taskify</Logo>
       <Controls>
-        <Counter>
-          {openTasks} open • {totalTasks} total
-        </Counter>
-        <CompleteAllButton 
-          onClick={completeAllTasks}
-          disabled={!hasIncompleteTasks}
-          aria-label="Complete all tasks"
-        >
-          <Check size={14} />
-          Complete all
-        </CompleteAllButton>
         <ThemeToggle onClick={toggleTheme} aria-label="Toggle theme">
           {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
         </ThemeToggle>

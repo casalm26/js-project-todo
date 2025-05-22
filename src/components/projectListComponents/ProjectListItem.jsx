@@ -12,8 +12,8 @@ const ProjectButton = styled.button`
   padding: 0.5rem;
   border: none;
   background: none;
-  color: ${({ theme, active }) =>
-    active ? theme.colors.primary : theme.colors.text};
+  color: ${({ theme, $active }) =>
+    $active ? theme.colors.primary : theme.colors.text};
   cursor: pointer;
   border-radius: ${({ theme }) => theme.borderRadius.sm};
   transition: all ${({ theme }) => theme.transitions.default};
@@ -37,7 +37,7 @@ const ProjectCount = styled.span`
 
 export const ProjectListItem = ({ name, count, active, onClick, children }) => (
   <ProjectItem>
-    <ProjectButton onClick={onClick} active={active} aria-label={`Select project ${name}`}>
+    <ProjectButton onClick={onClick} $active={active} aria-label={`Select project ${name}`}>
       <ProjectName>{name}</ProjectName>
       <ProjectCount>{count}</ProjectCount>
     </ProjectButton>
