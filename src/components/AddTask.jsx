@@ -111,7 +111,7 @@ export const AddTask = () => {
         onChange={(e) => setDueDate(e.target.value)}
         aria-label="Due date"
       />
-      <AddButton type="submit" disabled={!title.trim()}>
+      <AddButton type="submit" disabled={!title.trim()} aria-label="Add task">
         <Plus size={20} />
       </AddButton>
     </Form>

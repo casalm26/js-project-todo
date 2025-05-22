@@ -37,7 +37,7 @@ const ProjectCount = styled.span`
 
 export const ProjectListItem = ({ name, count, active, onClick, children }) => (
   <ProjectItem>
-    <ProjectButton onClick={onClick} active={active}>
+    <ProjectButton onClick={onClick} active={active} aria-label={`Select project ${name}`}>
       <ProjectName>{name}</ProjectName>
       <ProjectCount>{count}</ProjectCount>
     </ProjectButton>

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useUiStore } from '../../store/useUiStore';
+import { useUiStore } from '../store/useUiStore';
 
 const Container = styled.div`
   display: flex;
@@ -30,6 +30,7 @@ const Description = styled.p`
   font-size: ${({ theme }) => theme.typography.fontSize.base};
   max-width: 400px;
   margin: 0 auto;
+  color: ${({ theme }) => theme.colors.text};
 `;
 
 const KeyboardShortcut = styled.kbd`
@@ -61,7 +62,7 @@ export const EmptyState = ({ type = 'no-tasks' }) => {
       case 'all-done':
         return {
           title: 'All done!',
-          description: 'Time to celebrate your productivity',
+          description: 'Take the rest of the day off!',
           illustration: '🎉',
         };
       case 'no-results':

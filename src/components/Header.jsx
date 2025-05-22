@@ -106,7 +106,7 @@ export const Header = () => {
 
   return (
     <HeaderContainer>
-      <Logo>Taskify</Logo>
+      <Logo aria-label="Taskify home">Taskify</Logo>
       <Controls>
         <Counter>
           {openTasks} open • {totalTasks} total

@@ -124,7 +124,7 @@ export const TaskItem = ({ task }) => {
     <ItemContainer>
       <Checkbox
         onClick={() => toggleTask(task.id)}
-        aria-label={task.completed ? 'Mark as incomplete' : 'Mark as complete'}
+        aria-label={task.completed ? `Mark ${task.title} as incomplete` : `Mark ${task.title} as complete`}
       >
         {task.completed && <Check size={14} />}
       </Checkbox>
