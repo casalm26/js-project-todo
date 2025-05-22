@@ -26,13 +26,13 @@ export const useKeyboardShortcuts = ({
       }
 
       // Complete task shortcut (x)
-      if (e.key === 'x' && !e.shiftKey) {
+      if (e.key === 'x' && !e.shiftKey && !e.altKey) {
         e.preventDefault();
         onCompleteTask?.(selectedTaskId);
       }
 
-      // Complete all shortcut (Shift + x)
-      if (e.key === 'x' && e.shiftKey) {
+      // Complete all shortcut (Option + Shift + x)
+      if (e.key === 'x' && e.shiftKey && e.altKey) {
         e.preventDefault();
         onCompleteAll?.();
       }

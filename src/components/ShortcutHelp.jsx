@@ -82,7 +82,7 @@ const shortcuts = [
   { description: 'Quick add task', keys: ['q'] },
   { description: 'Submit form', keys: ['⌘', 'Enter'] },
   { description: 'Complete task', keys: ['x'] },
-  { description: 'Complete all tasks', keys: ['Shift', 'x'] },
+  { description: 'Complete all tasks', keys: ['⌥', 'Shift', 'x'] },
   { description: 'Navigate up', keys: ['↑'] },
   { description: 'Navigate down', keys: ['↓'] },
 ];

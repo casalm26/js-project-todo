@@ -1,0 +1,25 @@
+ MVP acceptance checklist ✅
+
+#	Requirement	Verified by
+1	Zustand store – no prop drilling	Code review
+2	Can add, list, toggle, delete todos	Manual test
+3	Counter for total or open tasks	UI check
+4	Nice empty-state message/graphic	UI check
+5	Responsive 320 – 1600 px	Chrome dev-tools
+6	Lighthouse ≥ 95 (Perf, A11y, BP)	Lighthouse CI
+7	Images have alt; contrast AA	A11y audit
+8	Clean code (ESLint passes)	CI lint job
+
+
+⸻
+
+Stretch goals (tackle only after §6 is green)
+	1.	Timestamps – add createdAt; display formatDistanceToNow.
+	2.	Complete-all button.
+		- Button UI implemented ✅
+		- TODO: Fix Option+Shift+X keyboard shortcut not working
+	3.	Dark / light mode – CSS variables + toggle, persist in localStorage.
+	4.	Persist todos – serialise store → localStorage; hydrate on load.
+	5.	Due date field in form + overdue styling.
+	6.	Filters (completed, uncompleted, createdAfter).
+	7.	Tags & projects (extend model, add filter UI).
