@@ -32,8 +32,7 @@ const Content = styled.div`
 `;
 
 export const App = () => {
-  const { isDarkMode, isShortcutHelpOpen, toggleShortcutHelp, selectedTaskId, setSelectedTaskId } = useUiStore();
-  const { tasks, toggleTask, completeAllTasks } = useTaskStore();
+  const { isDarkMode } = useUiStore();
   const theme = isDarkMode ? darkTheme : lightTheme;
 
   useKeyboardShortcuts({
@@ -45,23 +44,6 @@ export const App = () => {
       const form = document.querySelector('form');
       form?.requestSubmit();
     },
-    onCompleteTask: (id) => {
-      if (id) toggleTask(id);
-    },
-    onCompleteAll: () => {
-      completeAllTasks();
-    },
-    onNavigateUp: (id) => {
-      const element = document.querySelector(`[data-task-id="${id}"]`);
-      element?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    },
-    onNavigateDown: (id) => {
-      const element = document.querySelector(`[data-task-id="${id}"]`);
-      element?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    },
-    selectedTaskId,
-    setSelectedTaskId,
-    tasks,
   });
 
   return (
@@ -76,7 +58,7 @@ export const App = () => {
             <TaskList />
           </Content>
         </Main>
-        <ShortcutHelp isOpen={isShortcutHelpOpen} onClose={toggleShortcutHelp} />
+        <ShortcutHelp />
       </AppContainer>
     </ThemeProvider>
   );

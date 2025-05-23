@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { useUiStore } from '../../store/useUiStore';
 import { device } from '../../styles/media';
 
 const FilterBar = styled.div`
@@ -28,16 +29,20 @@ const FilterSelect = styled.select`
   }
 `;
 
-export const ProjectFilterBar = ({ status, setStatus }) => (
-  <FilterBar>
-    <FilterSelect
-      value={status}
-      onChange={(e) => setStatus(e.target.value)}
-      aria-label="Filter by status"
-    >
-      <option value="all">All tasks</option>
-      <option value="completed">Completed</option>
-      <option value="uncompleted">Uncompleted</option>
-    </FilterSelect>
-  </FilterBar>
-); 
+export const ProjectFilterBar = () => {
+  const { activeFilters, setFilter } = useUiStore();
+  
+  return (
+    <FilterBar>
+      <FilterSelect
+        value={activeFilters.status}
+        onChange={(e) => setFilter('status', e.target.value)}
+        aria-label="Filter by status"
+      >
+        <option value="all">All tasks</option>
+        <option value="completed">Completed</option>
+        <option value="uncompleted">Uncompleted</option>
+      </FilterSelect>
+    </FilterBar>
+  );
+}; 

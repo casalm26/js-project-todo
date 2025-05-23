@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { useTaskStore } from '../../store/useTaskStore';
+import { useUiStore } from '../../store/useUiStore';
 import { ProjectListItem } from './ProjectListItem';
 
 const ProjectListContainer = styled.ul`
@@ -18,35 +20,52 @@ const ProgressBar = styled.div`
 const Progress = styled.div`
   height: 100%;
   background-color: ${({ theme }) => theme.colors.primary};
-  width: ${({ progress }) => `${progress}%`};
+  width: ${({ $progress }) => `${$progress}%`};
   transition: width ${({ theme }) => theme.transitions.default};
 `;
 
-export const ProjectListItems = ({ projects, tasks, activeProject, onProjectClick, getProjectProgress }) => (
-  <ProjectListContainer>
-    <ProjectListItem
-      name="All tasks"
-      count={tasks.length}
-      active={!activeProject}
-      onClick={() => onProjectClick(null)}
-    />
-    {projects.map((project) => {
-      const projectTasks = tasks.filter((task) => task.projectId === project.id);
-      const progress = getProjectProgress(project.id);
-      const isActive = activeProject === project.id;
-      return (
-        <ProjectListItem
-          key={project.id}
-          name={project.name}
-          count={projectTasks.length}
-          active={isActive}
-          onClick={() => onProjectClick(project.id)}
-        >
-          <ProgressBar>
-            <Progress progress={progress} />
-          </ProgressBar>
-        </ProjectListItem>
-      );
-    })}
-  </ProjectListContainer>
-); 
+export const ProjectListItems = () => {
+  const { projects, tasks } = useTaskStore();
+  const { activeFilters, setFilter, toggleSidebar } = useUiStore();
+
+  const handleProjectClick = (projectId) => {
+    setFilter('project', projectId);
+    if (window.innerWidth <= 768) toggleSidebar();
+  };
+
+  const getProjectProgress = (projectId) => {
+    const projectTasks = tasks.filter((task) => task.projectId === projectId);
+    if (projectTasks.length === 0) return 0;
+    const completedTasks = projectTasks.filter((task) => task.completed).length;
+    return (completedTasks / projectTasks.length) * 100;
+  };
+
+  return (
+    <ProjectListContainer>
+      <ProjectListItem
+        name="All tasks"
+        count={tasks.length}
+        active={!activeFilters.project}
+        onClick={() => handleProjectClick(null)}
+      />
+      {projects.map((project) => {
+        const projectTasks = tasks.filter((task) => task.projectId === project.id);
+        const progress = getProjectProgress(project.id);
+        const isActive = activeFilters.project === project.id;
+        return (
+          <ProjectListItem
+            key={project.id}
+            name={project.name}
+            count={projectTasks.length}
+            active={isActive}
+            onClick={() => handleProjectClick(project.id)}
+          >
+            <ProgressBar>
+              <Progress $progress={progress} />
+            </ProgressBar>
+          </ProjectListItem>
+        );
+      })}
+    </ProjectListContainer>
+  );
+}; 

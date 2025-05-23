@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { useUiStore } from '../store/useUiStore';
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -81,17 +82,20 @@ const CloseButton = styled.button`
 const shortcuts = [
   { description: 'Quick add task', keys: ['q'] },
   { description: 'Submit form', keys: ['⌘', 'Enter'] },
-  { description: 'Complete task', keys: ['x'] },
+  { description: 'Complete selected task', keys: ['x'] },
   { description: 'Complete all tasks', keys: ['⌥', 'Shift', 'x'] },
   { description: 'Navigate up', keys: ['↑'] },
   { description: 'Navigate down', keys: ['↓'] },
+  { description: 'Show shortcuts help', keys: ['?'] },
 ];
 
-export const ShortcutHelp = ({ isOpen, onClose }) => {
-  if (!isOpen) return null;
+export const ShortcutHelp = () => {
+  const { isShortcutHelpOpen, toggleShortcutHelp } = useUiStore();
+  
+  if (!isShortcutHelpOpen) return null;
 
   return (
-    <ModalOverlay onClick={onClose}>
+    <ModalOverlay onClick={toggleShortcutHelp}>
       <ModalContent onClick={(e) => e.stopPropagation()}>
         <Title>Keyboard Shortcuts</Title>
         <ShortcutList>
@@ -106,7 +110,7 @@ export const ShortcutHelp = ({ isOpen, onClose }) => {
             </ShortcutItem>
           ))}
         </ShortcutList>
-        <CloseButton onClick={onClose} aria-label="Close shortcuts help">
+        <CloseButton onClick={toggleShortcutHelp} aria-label="Close shortcuts help">
           ×
         </CloseButton>
       </ModalContent>

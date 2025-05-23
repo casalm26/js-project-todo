@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { useTaskStore } from '../store/useTaskStore';
+import { useUiStore } from '../store/useUiStore';
 import { FiCheck, FiTrash2 } from 'react-icons/fi';
 import { formatDistanceToNow } from 'date-fns';
 import { isPast, startOfDay } from 'date-fns';
@@ -9,9 +10,13 @@ const ItemContainer = styled.div`
   align-items: flex-start;
   gap: 0.75rem;
   padding: 1rem;
-  background-color: ${({ theme }) => theme.colors.surface};
+  background-color: ${({ theme, $selected }) => 
+    $selected ? theme.colors.primaryLight : theme.colors.surface};
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
-  transition: background-color ${({ theme }) => theme.transitions.default};
+  border-left: ${({ theme, $selected }) => 
+    $selected ? `3px solid ${theme.colors.primary}` : '3px solid transparent'};
+  transition: all ${({ theme }) => theme.transitions.default};
+  cursor: pointer;
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.surfaceHover};
@@ -116,13 +121,25 @@ const DueDate = styled(MetaItem)`
 
 export const TaskItem = ({ task }) => {
   const { toggleTask, deleteTask } = useTaskStore();
+  const { selectedTaskId, setSelectedTaskId } = useUiStore();
   
   const isOverdue = task.dueDate && isPast(startOfDay(new Date(task.dueDate))) && !task.completed;
+  const isSelected = selectedTaskId === task.id;
+
+  const handleClick = () => {
+    setSelectedTaskId(task.id);
+  };
 
   return (
-    <ItemContainer>
+    <ItemContainer 
+      $selected={isSelected}
+      onClick={handleClick}
+    >
       <Checkbox
-        onClick={() => toggleTask(task.id)}
+        onClick={(e) => {
+          e.stopPropagation();
+          toggleTask(task.id);
+        }}
         aria-label={task.completed ? `Mark ${task.title} as incomplete` : `Mark ${task.title} as complete`}
       >
         {task.completed && <FiCheck size={14} />}
@@ -157,7 +174,10 @@ export const TaskItem = ({ task }) => {
       </Content>
       <Actions>
         <ActionButton
-          onClick={() => deleteTask(task.id)}
+          onClick={(e) => {
+            e.stopPropagation();
+            deleteTask(task.id);
+          }}
           aria-label="Delete task"
         >
           <FiTrash2 size={16} />

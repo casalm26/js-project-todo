@@ -35,7 +35,7 @@ const Description = styled.p`
   font-size: 1rem;
   max-width: 25rem;
   margin: 0 auto;
-  color: #181818;
+  color: ${({ theme }) => theme.colors.textSecondary};
   font-weight: 500;
 `;
 

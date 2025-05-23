@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { useTaskStore } from '../store/useTaskStore';
 import { useUiStore } from '../store/useUiStore';
 import { ProjectListHeader } from './projectListComponents/ProjectListHeader';
 import { ProjectFilterBar } from './projectListComponents/ProjectFilterBar';
@@ -9,7 +8,7 @@ import { device } from '../styles/media';
 const DrawerOverlay = styled.div`
   display: none;
   ${device.mobile} {
-    display: ${({ open }) => (open ? 'block' : 'none')};
+    display: ${({ $open }) => ($open ? 'block' : 'none')};
     position: fixed;
     top: 0;
     left: 0;
@@ -40,7 +39,7 @@ const DrawerContainer = styled.div`
     left: auto;
     height: 100vh;
     z-index: 1001;
-    transform: translateX(${({ open }) => (open ? '0' : '100%')});
+    transform: translateX(${({ $open }) => ($open ? '0' : '100%')});
     transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
     box-shadow: -0.125rem 0 1rem rgba(0,0,0,0.16);
     min-width: 80vw;
@@ -57,27 +56,7 @@ const Divider = styled.hr`
 `;
 
 export const ProjectList = () => {
-  const { projects, tasks, addProject } = useTaskStore();
-  const { activeFilters, setFilter, sidebarOpen, toggleSidebar } = useUiStore();
-
-  const handleProjectClick = (projectId) => {
-    setFilter('project', projectId);
-    if (window.innerWidth <= 768) toggleSidebar();
-  };
-
-  const handleAddProject = () => {
-    const name = prompt('Enter project name:');
-    if (name?.trim()) {
-      addProject(name.trim());
-    }
-  };
-
-  const getProjectProgress = (projectId) => {
-    const projectTasks = tasks.filter((task) => task.projectId === projectId);
-    if (projectTasks.length === 0) return 0;
-    const completedTasks = projectTasks.filter((task) => task.completed).length;
-    return (completedTasks / projectTasks.length) * 100;
-  };
+  const { sidebarOpen, toggleSidebar } = useUiStore();
 
   // Overlay click closes drawer
   const handleOverlayClick = () => {
@@ -86,21 +65,12 @@ export const ProjectList = () => {
 
   return (
     <>
-      <DrawerOverlay open={sidebarOpen} onClick={handleOverlayClick} />
-      <DrawerContainer open={sidebarOpen}>
-        <ProjectListHeader onAdd={handleAddProject} onClose={toggleSidebar} />
-        <ProjectFilterBar
-          status={activeFilters.status}
-          setStatus={(status) => setFilter('status', status)}
-        />
+      <DrawerOverlay $open={sidebarOpen} onClick={handleOverlayClick} />
+      <DrawerContainer $open={sidebarOpen}>
+        <ProjectListHeader />
+        <ProjectFilterBar />
         <Divider />
-        <ProjectListItems
-          projects={projects}
-          tasks={tasks}
-          activeProject={activeFilters.project}
-          onProjectClick={handleProjectClick}
-          getProjectProgress={getProjectProgress}
-        />
+        <ProjectListItems />
       </DrawerContainer>
     </>
   );
