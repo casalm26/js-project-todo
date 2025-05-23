@@ -12,6 +12,11 @@ export const lightTheme = {
     error: '#dc3545',
     success: '#22c55e',
     warning: '#f59e0b',
+    // Three.js compatible colors
+    threeJs: {
+      lineColor: '#6c757d',    // textSecondary for lines
+      backgroundColor: '#f8f9fa', // background for canvas
+    },
   },
   shadows: {
     small: '0 1px 2px 0 rgb(0 0 0 / 0.05)',
@@ -68,6 +73,11 @@ export const darkTheme = {
     error: '#f87171',
     success: '#4ade80',
     warning: '#fbbf24',
+    // Three.js compatible colors
+    threeJs: {
+      lineColor: '#94a3b8',    // textSecondary for lines
+      backgroundColor: '#0f172a', // background for canvas
+    },
   },
   shadows: {
     small: '0 1px 2px 0 rgb(0 0 0 / 0.3)',
