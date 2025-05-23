@@ -1,14 +1,14 @@
 import styled from 'styled-components';
-import { Plus } from '../icons/Plus';
-import { Check } from '../icons/Check';
+import { FiPlus, FiCheck } from 'react-icons/fi';
 import { useTaskStore } from '../../store/useTaskStore';
+import { device } from '../../styles/media';
 
 const DrawerHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 1rem 1rem 0.5rem 1rem;
-  @media (max-width: 768px) {
+  ${device.mobile} {
     padding: 1rem;
   }
 `;
@@ -22,7 +22,7 @@ const Title = styled.h2`
 
 const CloseButton = styled.button`
   display: none;
-  @media (max-width: 768px) {
+  ${device.mobile} {
     display: flex;
     background: none;
     border: none;
@@ -95,11 +95,11 @@ export const ProjectListHeader = ({ onAdd, onClose }) => {
           disabled={!hasIncompleteTasks}
           aria-label="Complete all tasks"
         >
-          <Check size={14} />
+          <FiCheck size={14} />
           Complete all
         </CompleteAllButton>
         <AddButton onClick={onAdd} aria-label="Add new project">
-          <Plus size={16} />
+          <FiPlus size={16} />
         </AddButton>
         <CloseButton onClick={onClose} aria-label="Close menu">×</CloseButton>
       </div>

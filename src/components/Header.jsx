@@ -1,9 +1,8 @@
 import styled from 'styled-components';
 import { useTaskStore } from '../store/useTaskStore';
 import { useUiStore } from '../store/useUiStore';
-import { Sun } from './icons/Sun';
-import { Moon } from './icons/Moon';
-import { Check } from './icons/Check';
+import { FiSun, FiMoon } from 'react-icons/fi';
+import { device } from '../styles/media';
 
 const HeaderContainer = styled.header`
   display: flex;
@@ -82,7 +81,7 @@ const HamburgerButton = styled.button`
   border-radius: ${({ theme }) => theme.borderRadius.sm};
   align-items: center;
   justify-content: center;
-  @media (max-width: 768px) {
+  ${device.mobile} {
     display: flex;
   }
 `;
@@ -109,7 +108,7 @@ export const Header = () => {
       <Logo aria-label="Taskify home">Taskify</Logo>
       <Controls>
         <ThemeToggle onClick={toggleTheme} aria-label="Toggle theme">
-          {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
+          {isDarkMode ? <FiSun size={20} /> : <FiMoon size={20} />}
         </ThemeToggle>
         <HamburgerButton onClick={toggleSidebar} aria-label="Open menu">
           <HamburgerIcon />

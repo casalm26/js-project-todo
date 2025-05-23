@@ -4,10 +4,11 @@ import { useUiStore } from '../store/useUiStore';
 import { ProjectListHeader } from './projectListComponents/ProjectListHeader';
 import { ProjectFilterBar } from './projectListComponents/ProjectFilterBar';
 import { ProjectListItems } from './projectListComponents/ProjectListItems';
+import { device } from '../styles/media';
 
 const DrawerOverlay = styled.div`
   display: none;
-  @media (max-width: 768px) {
+  ${device.mobile} {
     display: ${({ open }) => (open ? 'block' : 'none')};
     position: fixed;
     top: 0;
@@ -26,13 +27,13 @@ const DrawerContainer = styled.div`
   background: ${({ theme }) => theme.colors.surface};
   padding: 0;
   border-right: none;
-  @media (min-width: 769px) {
+  ${device.desktop} {
     position: static;
     z-index: 100;
     box-shadow: none;
     border-right: none;
   }
-  @media (max-width: 768px) {
+  ${device.mobile} {
     position: fixed;
     top: 0;
     right: 0;

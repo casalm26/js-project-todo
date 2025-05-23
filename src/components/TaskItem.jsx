@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import { useTaskStore } from '../store/useTaskStore';
-import { Check } from './icons/Check';
-import { Trash } from './icons/Trash';
+import { FiCheck, FiTrash2 } from 'react-icons/fi';
 import { formatDistanceToNow } from 'date-fns';
 import { isPast, startOfDay } from 'date-fns';
 
@@ -126,7 +125,7 @@ export const TaskItem = ({ task }) => {
         onClick={() => toggleTask(task.id)}
         aria-label={task.completed ? `Mark ${task.title} as incomplete` : `Mark ${task.title} as complete`}
       >
-        {task.completed && <Check size={14} />}
+        {task.completed && <FiCheck size={14} />}
       </Checkbox>
       <Content>
         <Title $completed={task.completed}>{task.title}</Title>
@@ -161,7 +160,7 @@ export const TaskItem = ({ task }) => {
           onClick={() => deleteTask(task.id)}
           aria-label="Delete task"
         >
-          <Trash size={16} />
+          <FiTrash2 size={16} />
         </ActionButton>
       </Actions>
     </ItemContainer>

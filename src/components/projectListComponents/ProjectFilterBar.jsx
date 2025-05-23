@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { device } from '../../styles/media';
 
 const FilterBar = styled.div`
   display: flex;
@@ -17,7 +18,7 @@ const FilterSelect = styled.select`
   color: ${({ theme }) => theme.colors.text};
   font-size: 0.875rem;
   margin-bottom: 0.25rem;
-  @media (min-width: 769px) {
+  ${device.desktop} {
     width: auto;
     margin-bottom: 0;
   }

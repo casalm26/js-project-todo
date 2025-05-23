@@ -2,7 +2,8 @@ import { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { useTaskStore } from '../store/useTaskStore';
 import { useUiStore } from '../store/useUiStore';
-import { Plus } from './icons/Plus';
+import { FiPlus } from 'react-icons/fi';
+import { device } from '../styles/media';
 
 const Form = styled.form`
   display: flex;
@@ -11,7 +12,7 @@ const Form = styled.form`
   padding: ${({ theme }) => theme.spacing.md};
   background-color: ${({ theme }) => theme.colors.surface};
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
-  @media (max-width: 48rem) {
+  ${device.mobile} {
     display: grid;
     grid-template-columns: 1fr auto;
     grid-template-rows: 1fr 1fr;
@@ -28,7 +29,7 @@ const Input = styled.input`
   background-color: ${({ theme }) => theme.colors.background};
   color: ${({ theme }) => theme.colors.text};
   font-size: ${({ theme }) => theme.typography.fontSize.base};
-  @media (max-width: 48rem) {
+  ${device.mobile} {
     grid-column: 1 / 2;
     grid-row: 1 / 2;
   }
@@ -48,7 +49,7 @@ const DateInput = styled.input`
   background-color: ${({ theme }) => theme.colors.background};
   color: ${({ theme }) => theme.colors.text};
   font-size: ${({ theme }) => theme.typography.fontSize.sm};
-  @media (max-width: 48rem) {
+  ${device.mobile} {
     grid-column: 1 / 2;
     grid-row: 2 / 3;
   }
@@ -71,7 +72,7 @@ const AddButton = styled.button`
   grid-row: 1 / span 2;
   grid-column: 2 / 3;
   align-self: center;
-  @media (min-width: 48rem) {
+  ${device.desktop} {
     grid-row: auto;
     grid-column: auto;
     align-self: auto;
@@ -130,7 +131,7 @@ export const AddTask = () => {
         aria-label="Due date"
       />
       <AddButton type="submit" disabled={!title.trim()} aria-label="Add task">
-        <Plus size={20} />
+        <FiPlus size={20} />
       </AddButton>
     </Form>
   );
