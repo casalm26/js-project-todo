@@ -1,5 +1,6 @@
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { useUiStore } from '../store/useUiStore';
+import Weightless from './Weightless';
 
 const Container = styled.div`
   display: flex;
@@ -10,13 +11,17 @@ const Container = styled.div`
   padding: ${({ theme }) => theme.spacing.xl};
   text-align: center;
   color: ${({ theme }) => theme.colors.textSecondary};
+  background: none;
 `;
 
 const Illustration = styled.div`
-  width: 200px;
-  height: 200px;
-  margin-bottom: ${({ theme }) => theme.spacing.lg};
-  opacity: 0.8;
+  width: 120px;
+  height: 120px;
+  margin: 0 auto ${({ theme }) => theme.spacing.lg} auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
 `;
 
 const Title = styled.h2`
@@ -46,7 +51,24 @@ const KeyboardShortcut = styled.kbd`
 `;
 
 export const EmptyState = ({ type = 'no-tasks' }) => {
+  const theme = useTheme();
   const { isDarkMode } = useUiStore();
+
+  // Convert theme color to hex if needed
+  const getHexColor = (color) => {
+    // If already a hex, return as is
+    if (typeof color === 'string' && color.startsWith('#')) return color;
+    // If rgb/rgba, convert to hex
+    if (typeof color === 'string' && color.startsWith('rgb')) {
+      const rgb = color.match(/\d+/g);
+      if (!rgb) return '#333333';
+      return (
+        '#' + rgb.slice(0, 3).map(x => (+x).toString(16).padStart(2, '0')).join('')
+      );
+    }
+    // Fallback
+    return '#333333';
+  };
 
   const getContent = () => {
     switch (type) {
@@ -58,7 +80,12 @@ export const EmptyState = ({ type = 'no-tasks' }) => {
               Press <KeyboardShortcut>Q</KeyboardShortcut> to add your first task
             </>
           ),
-          illustration: isDarkMode ? '🌙' : '☀️',
+          illustration: (
+            <Weightless
+              lineColor={getHexColor(theme.colors.textSecondary)}
+              backgroundColor={getHexColor(theme.colors.background)}
+            />
+          ),
         };
       case 'all-done':
         return {

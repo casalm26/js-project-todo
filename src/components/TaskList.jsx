@@ -5,6 +5,7 @@ import { useTaskStore } from '../store/useTaskStore';
 import { useUiStore } from '../store/useUiStore';
 import { TaskItem } from './TaskItem';
 import { startOfDay, isAfter } from 'date-fns';
+import { EmptyState } from './EmptyState';
 
 const ListContainer = styled.div`
   height: calc(100vh - 4rem);
@@ -19,17 +20,6 @@ const VirtualList = styled.div`
 
 const TaskItemWrapper = styled.div`
   width: 100%;
-`;
-
-const EmptyState = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  color: ${({ theme }) => theme.colors.textSecondary};
-  text-align: center;
-  padding: ${({ theme }) => theme.spacing.xl};
 `;
 
 const FilterBar = styled.div`
@@ -95,10 +85,15 @@ export const TaskList = () => {
   if (tasks.length === 0) {
     return (
       <ListContainer>
-        <EmptyState>
-          <h2>No tasks yet</h2>
-          <p>Press Q to add your first task</p>
-        </EmptyState>
+        <EmptyState type="no-tasks" />
+      </ListContainer>
+    );
+  }
+
+  if (filteredTasks.length === 0) {
+    return (
+      <ListContainer>
+        <EmptyState type="no-results" />
       </ListContainer>
     );
   }
