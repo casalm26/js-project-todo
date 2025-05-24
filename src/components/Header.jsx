@@ -1,7 +1,6 @@
 import styled from 'styled-components';
-import { useTaskStore } from '../store/useTaskStore';
 import { useUiStore } from '../store/useUiStore';
-import { FiSun, FiMoon } from 'react-icons/fi';
+import { FiSun, FiMoon, FiMenu } from 'react-icons/fi';
 import { device } from '../styles/media';
 
 const HeaderContainer = styled.header`
@@ -24,35 +23,6 @@ const Controls = styled.div`
   display: flex;
   align-items: center;
   gap: 1rem;
-`;
-
-const Counter = styled.div`
-  font-size: 0.875rem;
-  color: ${({ theme }) => theme.colors.textSecondary};
-`;
-
-const CompleteAllButton = styled.button`
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 0.75rem;
-  border-radius: ${({ theme }) => theme.borderRadius.sm};
-  background: none;
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  color: ${({ theme }) => theme.colors.textSecondary};
-  font-size: 0.875rem;
-  cursor: pointer;
-  transition: all ${({ theme }) => theme.transitions.default};
-
-  &:hover {
-    color: ${({ theme }) => theme.colors.text};
-    border-color: ${({ theme }) => theme.colors.text};
-  }
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
 `;
 
 const ThemeToggle = styled.button`
@@ -81,27 +51,20 @@ const HamburgerButton = styled.button`
   border-radius: ${({ theme }) => theme.borderRadius.sm};
   align-items: center;
   justify-content: center;
+  color: ${({ theme }) => theme.colors.textSecondary};
+  transition: color ${({ theme }) => theme.transitions.default};
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.text};
+  }
+
   ${device.mobile} {
     display: flex;
   }
 `;
 
-const HamburgerIcon = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <line x1="3" y1="12" x2="21" y2="12" />
-    <line x1="3" y1="6" x2="21" y2="6" />
-    <line x1="3" y1="18" x2="21" y2="18" />
-  </svg>
-);
-
 export const Header = () => {
-  const { tasks, completeAllTasks } = useTaskStore();
   const { isDarkMode, toggleTheme, toggleSidebar } = useUiStore();
-
-  const totalTasks = tasks.length;
-  const completedTasks = tasks.filter((task) => task.completed).length;
-  const openTasks = totalTasks - completedTasks;
-  const hasIncompleteTasks = openTasks > 0;
 
   return (
     <HeaderContainer>
@@ -111,7 +74,7 @@ export const Header = () => {
           {isDarkMode ? <FiSun size={20} /> : <FiMoon size={20} />}
         </ThemeToggle>
         <HamburgerButton onClick={toggleSidebar} aria-label="Open menu">
-          <HamburgerIcon />
+          <FiMenu size={20} />
         </HamburgerButton>
       </Controls>
     </HeaderContainer>

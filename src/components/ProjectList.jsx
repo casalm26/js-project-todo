@@ -26,26 +26,24 @@ const DrawerContainer = styled.div`
   background: ${({ theme }) => theme.colors.surface};
   padding: 0;
   border-right: none;
+  
   ${device.desktop} {
     position: static;
     z-index: 100;
     box-shadow: none;
-    border-right: none;
   }
+  
   ${device.mobile} {
     position: fixed;
     top: 0;
     right: 0;
     left: auto;
-    height: 100vh;
     z-index: 1001;
     transform: translateX(${({ $open }) => ($open ? '0' : '100%')});
     transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
     box-shadow: -0.125rem 0 1rem rgba(0,0,0,0.16);
     min-width: 80vw;
     max-width: 20rem;
-    padding: 0;
-    border-right: none;
   }
 `;
 
@@ -58,14 +56,9 @@ const Divider = styled.hr`
 export const ProjectList = () => {
   const { sidebarOpen, toggleSidebar } = useUiStore();
 
-  // Overlay click closes drawer
-  const handleOverlayClick = () => {
-    if (sidebarOpen) toggleSidebar();
-  };
-
   return (
     <>
-      <DrawerOverlay $open={sidebarOpen} onClick={handleOverlayClick} />
+      <DrawerOverlay $open={sidebarOpen} onClick={toggleSidebar} />
       <DrawerContainer $open={sidebarOpen}>
         <ProjectListHeader />
         <ProjectFilterBar />

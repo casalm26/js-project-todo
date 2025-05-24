@@ -2,8 +2,7 @@ import styled from 'styled-components';
 import { useTaskStore } from '../store/useTaskStore';
 import { useUiStore } from '../store/useUiStore';
 import { FiCheck, FiTrash2 } from 'react-icons/fi';
-import { formatDistanceToNow } from 'date-fns';
-import { isPast, startOfDay } from 'date-fns';
+import { formatDueDate, formatCreatedDate, isTaskOverdue } from '../utils/dateUtils';
 
 const ItemContainer = styled.div`
   display: flex;
@@ -123,23 +122,32 @@ export const TaskItem = ({ task }) => {
   const { toggleTask, deleteTask } = useTaskStore();
   const { selectedTaskId, setSelectedTaskId } = useUiStore();
   
-  const isOverdue = task.dueDate && isPast(startOfDay(new Date(task.dueDate))) && !task.completed;
+  const isOverdue = isTaskOverdue(task.dueDate, task.completed);
   const isSelected = selectedTaskId === task.id;
 
-  const handleClick = () => {
+  const handleTaskClick = () => {
     setSelectedTaskId(task.id);
   };
+
+  const handleToggleClick = (e) => {
+    e.stopPropagation();
+    toggleTask(task.id);
+  };
+
+  const handleDeleteClick = (e) => {
+    e.stopPropagation();
+    deleteTask(task.id);
+  };
+
+  const hasTags = task.tags?.length > 0;
 
   return (
     <ItemContainer 
       $selected={isSelected}
-      onClick={handleClick}
+      onClick={handleTaskClick}
     >
       <Checkbox
-        onClick={(e) => {
-          e.stopPropagation();
-          toggleTask(task.id);
-        }}
+        onClick={handleToggleClick}
         aria-label={task.completed ? `Mark ${task.title} as incomplete` : `Mark ${task.title} as complete`}
       >
         {task.completed && <FiCheck size={14} />}
@@ -150,20 +158,17 @@ export const TaskItem = ({ task }) => {
           {task.dueDate && (
             <DueDate $isOverdue={isOverdue}>
               <time dateTime={task.dueDate}>
-                {new Date(task.dueDate).toLocaleDateString(undefined, {
-                  day: '2-digit',
-                  month: '2-digit'
-                })}
+                {formatDueDate(task.dueDate)}
               </time>
               {isOverdue && ' (overdue)'}
             </DueDate>
           )}
           {task.createdAt && (
             <MetaItem>
-              {`created ${formatDistanceToNow(new Date(task.createdAt), { addSuffix: true })}`}
+              created {formatCreatedDate(task.createdAt)}
             </MetaItem>
           )}
-          {task.tags && task.tags.length > 0 && (
+          {hasTags && (
             <TagList>
               {task.tags.map((tag) => (
                 <TagItem key={tag}>{tag}</TagItem>
@@ -174,10 +179,7 @@ export const TaskItem = ({ task }) => {
       </Content>
       <Actions>
         <ActionButton
-          onClick={(e) => {
-            e.stopPropagation();
-            deleteTask(task.id);
-          }}
+          onClick={handleDeleteClick}
           aria-label="Delete task"
         >
           <FiTrash2 size={16} />

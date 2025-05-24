@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import styled from 'styled-components';
 import { useTaskStore } from '../store/useTaskStore';
 import { useUiStore } from '../store/useUiStore';
@@ -92,18 +92,6 @@ export const AddTask = () => {
   const inputRef = useRef(null);
   const { addTask } = useTaskStore();
   const { activeFilters } = useUiStore();
-
-  useEffect(() => {
-    const handleKeyPress = (e) => {
-      if (e.key === 'q' && !e.ctrlKey && !e.metaKey) {
-        e.preventDefault();
-        inputRef.current?.focus();
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyPress);
-    return () => window.removeEventListener('keydown', handleKeyPress);
-  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();

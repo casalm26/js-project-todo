@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { useUiStore } from '../store/useUiStore';
+import { FiX } from 'react-icons/fi';
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -15,6 +16,7 @@ const ModalOverlay = styled.div`
 `;
 
 const ModalContent = styled.div`
+  position: relative;
   background-color: ${({ theme }) => theme.colors.surface};
   border-radius: ${({ theme }) => theme.borderRadius.lg};
   padding: 1.5rem;
@@ -73,6 +75,9 @@ const CloseButton = styled.button`
   padding: 0.5rem;
   border-radius: ${({ theme }) => theme.borderRadius.sm};
   transition: color ${({ theme }) => theme.transitions.default};
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   &:hover {
     color: ${({ theme }) => theme.colors.text};
@@ -111,7 +116,7 @@ export const ShortcutHelp = () => {
           ))}
         </ShortcutList>
         <CloseButton onClick={toggleShortcutHelp} aria-label="Close shortcuts help">
-          ×
+          <FiX size={20} />
         </CloseButton>
       </ModalContent>
     </ModalOverlay>
