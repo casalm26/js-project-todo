@@ -1,0 +1,7 @@
+{
+  "rules": [
+    "After generating or modifying code, always run /review to check for issues before considering the task complete.",
+    "Follow existing code patterns and conventions in the codebase.",
+    "Use the FEATURES.md file to track progress on features."
+  ]
+}
