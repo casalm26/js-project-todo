@@ -25,13 +25,25 @@ const Progress = styled.div`
 `;
 
 export const ProjectListItems = () => {
-  const { projects, tasks } = useTaskStore();
+  const { projects, tasks, deleteProject, updateProject } = useTaskStore();
   const { activeFilters, setFilter, toggleSidebar } = useUiStore();
 
   const handleProjectClick = (projectId) => {
     setFilter('project', projectId);
     setFilter('dateView', 'all');
     if (window.innerWidth <= 768) toggleSidebar();
+  };
+
+  const handleDeleteProject = (projectId) => {
+    // Clear filter if deleting the currently selected project
+    if (activeFilters.project === projectId) {
+      setFilter('project', null);
+    }
+    deleteProject(projectId);
+  };
+
+  const handleRenameProject = (projectId, newName) => {
+    updateProject(projectId, newName);
   };
 
   const getProjectProgress = (projectId) => {
@@ -56,10 +68,14 @@ export const ProjectListItems = () => {
         return (
           <ProjectListItem
             key={project.id}
+            id={project.id}
             name={project.name}
             count={projectTasks.length}
             active={isActive}
             onClick={() => handleProjectClick(project.id)}
+            onDelete={handleDeleteProject}
+            onRename={handleRenameProject}
+            isEditable
           >
             <ProgressBar>
               <Progress $progress={progress} />

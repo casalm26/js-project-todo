@@ -252,6 +252,38 @@ const PriorityBadge = styled.span`
   color: ${({ $priority }) => PRIORITY_COLORS[$priority]};
 `;
 
+const TagSelector = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+`;
+
+const TagChip = styled.button`
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid ${({ $selected, $color }) => ($selected ? $color : 'transparent')};
+  background-color: ${({ $selected, $color }) => ($selected ? `${$color}20` : 'transparent')};
+  color: ${({ theme, $selected, $color }) => ($selected ? $color : theme.colors.textSecondary)};
+  border-radius: ${({ theme }) => theme.borderRadius.full};
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all ${({ theme }) => theme.transitions.default};
+
+  &:hover {
+    border-color: ${({ $color }) => $color};
+    background-color: ${({ $color }) => `${$color}10`};
+  }
+`;
+
+const TagDot = styled.span`
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background-color: ${({ $color }) => $color};
+`;
+
 export const TaskItem = ({ task }) => {
   const { toggleTask, deleteTask, updateTask, tags } = useTaskStore();
   const { selectedTaskId, setSelectedTaskId } = useUiStore();
@@ -263,6 +295,7 @@ export const TaskItem = ({ task }) => {
     task.dueDate ? new Date(task.dueDate).toISOString().split('T')[0] : ''
   );
   const [editPriority, setEditPriority] = useState(task.priority || 4);
+  const [editTags, setEditTags] = useState(task.tags || []);
 
   const titleInputRef = useRef(null);
 
@@ -300,7 +333,14 @@ export const TaskItem = ({ task }) => {
     setEditDescription(task.description || '');
     setEditDueDate(task.dueDate ? new Date(task.dueDate).toISOString().split('T')[0] : '');
     setEditPriority(task.priority || 4);
+    setEditTags(task.tags || []);
     setIsEditing(true);
+  };
+
+  const handleTagToggle = (tagId) => {
+    setEditTags((prev) =>
+      prev.includes(tagId) ? prev.filter((id) => id !== tagId) : [...prev, tagId]
+    );
   };
 
   const handleCancelEdit = (e) => {
@@ -319,6 +359,7 @@ export const TaskItem = ({ task }) => {
       description: editDescription.trim(),
       dueDate: editDueDate || null,
       priority: parseInt(editPriority, 10),
+      tags: editTags,
     });
 
     setIsEditing(false);
@@ -378,6 +419,22 @@ export const TaskItem = ({ task }) => {
               <option value={4}>P4 - Low</option>
             </PrioritySelect>
           </EditRow>
+          {tags.length > 0 && (
+            <TagSelector>
+              {tags.map((tag) => (
+                <TagChip
+                  key={tag.id}
+                  type="button"
+                  $selected={editTags.includes(tag.id)}
+                  $color={tag.color}
+                  onClick={() => handleTagToggle(tag.id)}
+                >
+                  <TagDot $color={tag.color} />
+                  {tag.name}
+                </TagChip>
+              ))}
+            </TagSelector>
+          )}
           <EditActions>
             <EditButton type="submit" className="primary">
               Save

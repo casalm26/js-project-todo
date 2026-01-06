@@ -4,6 +4,7 @@ import { ProjectListHeader } from './projectListComponents/ProjectListHeader';
 import { ProjectFilterBar } from './projectListComponents/ProjectFilterBar';
 import { ProjectListItems } from './projectListComponents/ProjectListItems';
 import { DateViewFilters } from './projectListComponents/DateViewFilters';
+import { TagManager } from './projectListComponents/TagManager';
 import { device } from '../styles/media';
 
 const DrawerOverlay = styled.div`
@@ -27,13 +28,15 @@ const DrawerContainer = styled.div`
   background: ${({ theme }) => theme.colors.surface};
   padding: 0;
   border-right: none;
-  
+  display: flex;
+  flex-direction: column;
+
   ${device.desktop} {
     position: static;
     z-index: 100;
     box-shadow: none;
   }
-  
+
   ${device.mobile} {
     position: fixed;
     top: 0;
@@ -46,6 +49,11 @@ const DrawerContainer = styled.div`
     min-width: 80vw;
     max-width: 20rem;
   }
+`;
+
+const ScrollableContent = styled.div`
+  flex: 1;
+  overflow-y: auto;
 `;
 
 const Divider = styled.hr`
@@ -71,11 +79,15 @@ export const ProjectList = () => {
       <DrawerOverlay $open={sidebarOpen} onClick={toggleSidebar} />
       <DrawerContainer $open={sidebarOpen}>
         <ProjectListHeader />
-        <DateViewFilters />
-        <Divider />
-        <ProjectFilterBar />
-        <SectionTitle>Projects</SectionTitle>
-        <ProjectListItems />
+        <ScrollableContent>
+          <DateViewFilters />
+          <Divider />
+          <ProjectFilterBar />
+          <SectionTitle>Projects</SectionTitle>
+          <ProjectListItems />
+          <Divider />
+          <TagManager />
+        </ScrollableContent>
       </DrawerContainer>
     </>
   );
