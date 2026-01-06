@@ -19,12 +19,16 @@ export const useUiStore = create(
       sidebarOpen: false,
       toggleSidebar: () => set((state) => ({ sidebarOpen: !state.sidebarOpen })),
 
+      // Search
+      searchQuery: '',
+      setSearchQuery: (query) => set({ searchQuery: query }),
+
       // Filter State
       activeFilters: {
         status: 'all', // 'all', 'active', 'completed'
         project: null,
         tag: null,
-        dueDate: null,
+        dateView: 'all', // 'all', 'today', 'upcoming'
       },
       setFilter: (filterType, value) =>
         set((state) => ({
@@ -33,6 +37,15 @@ export const useUiStore = create(
             [filterType]: value,
           },
         })),
+      clearFilters: () =>
+        set({
+          activeFilters: {
+            status: 'all',
+            project: null,
+            tag: null,
+            dateView: 'all',
+          },
+        }),
 
       // View State
       viewMode: 'list', // 'list', 'board'

@@ -5,6 +5,7 @@ import { useUiStore } from '../store/useUiStore';
 export const useKeyboardShortcuts = ({
   onQuickAdd,
   onSubmit,
+  onSearch,
 }) => {
   const { completeAllTasks, toggleTask, tasks } = useTaskStore();
   const { selectedTaskId, setSelectedTaskId, toggleShortcutHelp } = useUiStore();
@@ -53,6 +54,12 @@ export const useKeyboardShortcuts = ({
         toggleShortcutHelp();
       }
 
+      // Search shortcut (/)
+      if (e.key === '/' && !e.ctrlKey && !e.metaKey) {
+        e.preventDefault();
+        onSearch?.();
+      }
+
       // Navigate tasks with arrow keys
       if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
         e.preventDefault();
@@ -85,6 +92,7 @@ export const useKeyboardShortcuts = ({
   }, [
     onQuickAdd,
     onSubmit,
+    onSearch,
     selectedTaskId,
     setSelectedTaskId,
     toggleTask,

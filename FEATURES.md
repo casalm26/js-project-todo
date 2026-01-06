@@ -23,18 +23,23 @@ A personal Todoist-like task management app.
 | Responsive sidebar | Fixed desktop, slide-out mobile |
 | Progress bars per project | Shows completion % |
 | Overdue detection | Red color + "(overdue)" label |
-| Keyboard shortcuts | Q, X, ?, Ctrl+Enter, Alt+Shift+X |
+| Keyboard shortcuts | Q, X, ?, /, Ctrl+Enter, Alt+Shift+X, Arrow keys |
+| **Task editing** | Edit title, description, due date, priority inline |
+| **Task descriptions** | Add notes/context to tasks |
+| **Priority levels** | P1 (red), P2 (orange), P3 (blue), P4 (gray) with color-coded borders |
+| **Today view** | Shows tasks due today + overdue |
+| **Upcoming view** | Shows tasks due in next 7 days |
+| **Search** | Full-text search in header (title + description) |
+| **Arrow key navigation** | Navigate tasks with scroll-into-view |
+| **Tag display** | Shows tag names with colors |
 
-### Broken/Incomplete Features
+### Still Needs Work
 
 | Feature | Issue |
 |---------|-------|
-| Arrow key navigation | Missing `data-task-id` attr - scroll fails |
-| Tag display | Shows raw IDs instead of tag names |
-| Tag management UI | Store exists, no UI |
-| Add tag to task UI | Store exists, no UI |
+| Tag management UI | Store exists, no UI to create/edit/delete tags |
+| Add tag to task UI | Store exists, no UI to assign tags |
 | Filter by tag | Store exists, not wired to TaskList |
-| Filter by due date | Store exists, not wired |
 | Delete project | Store exists, no UI |
 | Edit project | Store exists, no UI |
 | Board view | Store has viewMode, no UI |
@@ -43,30 +48,26 @@ A personal Todoist-like task management app.
 
 ---
 
-## Bug Fixes
+## Completed
 
-- [ ] Add `data-task-id` attribute to TaskItem for arrow key scroll
-- [ ] Fix tag display to show names instead of IDs
+- [x] Add `data-task-id` attribute to TaskItem for arrow key scroll
+- [x] Fix tag display to show names instead of IDs
+- [x] **Task editing** - Edit title, due date, description, priority after creation
+- [x] **Task descriptions** - Add notes/context to tasks
+- [x] **Priority levels** - P1 (red), P2 (orange), P3 (blue), P4 (gray)
+- [x] **Today view** - Filter to tasks due today (+ overdue)
+- [x] **Upcoming view** - See tasks for next 7 days
+- [x] **Search** - Full-text search across tasks (title + description)
 
 ---
 
 ## Features to Build
-
-### Phase 1: Core Improvements (High Priority)
-
-- [ ] **Task editing** - Edit title, due date after creation
-- [ ] **Task descriptions** - Add notes/context to tasks
-- [ ] **Priority levels** - P1 (red), P2 (orange), P3 (blue), P4 (gray)
-- [ ] **Today view** - Filter to tasks due today
-- [ ] **Upcoming view** - See tasks for next 7 days
-- [ ] **Search** - Full-text search across tasks
 
 ### Phase 2: Complete Scaffolded Features
 
 - [ ] **Tag management UI** - Create, edit, delete tags with colors
 - [ ] **Add tags to tasks** - UI to assign/remove tags
 - [ ] **Filter by tag** - Wire up existing store filter
-- [ ] **Filter by due date** - Today, this week, overdue, no date
 - [ ] **Delete project** - Add delete button to projects
 - [ ] **Edit project** - Rename projects inline
 - [ ] **Board/Kanban view** - Toggle between list and board
@@ -101,13 +102,27 @@ A personal Todoist-like task management app.
 
 ---
 
-## Data Model Changes Needed
+## Data Model
 
+### Current Task Model
 ```javascript
-// Task additions
 {
-  description: string | null,    // Task notes
-  priority: 1 | 2 | 3 | 4,       // P1-P4
+  id: string,
+  title: string,
+  completed: boolean,
+  createdAt: string,        // ISO timestamp
+  projectId: string | null,
+  dueDate: string | null,   // ISO timestamp
+  tags: string[],           // Array of tag IDs
+  description: string,      // Task notes
+  priority: 1 | 2 | 3 | 4,  // P1-P4
+}
+```
+
+### Future Additions Needed
+```javascript
+// Task additions for subtasks/recurring
+{
   parentId: string | null,       // For subtasks
   sectionId: string | null,      // Section within project
   recurring: {                   // Recurring config
@@ -128,16 +143,18 @@ A personal Todoist-like task management app.
 
 ---
 
-## Keyboard Shortcuts (Current)
+## Keyboard Shortcuts
 
 | Key | Action |
 |-----|--------|
 | `Q` | Focus quick add input |
+| `/` | Focus search |
 | `X` | Complete selected task |
 | `Alt+Shift+X` | Complete all tasks |
+| `↑` / `↓` | Navigate tasks |
 | `?` | Show shortcuts help |
 | `Ctrl/Cmd+Enter` | Submit form |
-| `Arrow Up/Down` | Navigate tasks (broken) |
+| `Esc` | Cancel edit (in edit mode) |
 
 ### Planned Shortcuts
 
@@ -147,5 +164,3 @@ A personal Todoist-like task management app.
 | `#` | Add/change project |
 | `P` | Set priority |
 | `T` | Set due date |
-| `/` | Focus search |
-| `Esc` | Close modal/deselect |

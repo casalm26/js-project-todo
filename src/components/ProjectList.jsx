@@ -3,6 +3,7 @@ import { useUiStore } from '../store/useUiStore';
 import { ProjectListHeader } from './projectListComponents/ProjectListHeader';
 import { ProjectFilterBar } from './projectListComponents/ProjectFilterBar';
 import { ProjectListItems } from './projectListComponents/ProjectListItems';
+import { DateViewFilters } from './projectListComponents/DateViewFilters';
 import { device } from '../styles/media';
 
 const DrawerOverlay = styled.div`
@@ -53,6 +54,15 @@ const Divider = styled.hr`
   margin: 0 0 1rem 0;
 `;
 
+const SectionTitle = styled.h3`
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: ${({ theme }) => theme.colors.textSecondary};
+  padding: 0 1rem;
+  margin: 0 0 0.5rem 0;
+`;
+
 export const ProjectList = () => {
   const { sidebarOpen, toggleSidebar } = useUiStore();
 
@@ -61,8 +71,10 @@ export const ProjectList = () => {
       <DrawerOverlay $open={sidebarOpen} onClick={toggleSidebar} />
       <DrawerContainer $open={sidebarOpen}>
         <ProjectListHeader />
-        <ProjectFilterBar />
+        <DateViewFilters />
         <Divider />
+        <ProjectFilterBar />
+        <SectionTitle>Projects</SectionTitle>
         <ProjectListItems />
       </DrawerContainer>
     </>

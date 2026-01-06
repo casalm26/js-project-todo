@@ -20,9 +20,25 @@ export const useTaskStore = create(
               projectId,
               dueDate: dueDate ? new Date(dueDate).toISOString() : null,
               tags: [],
+              description: '',
+              priority: 4,
             },
             ...state.tasks,
           ],
+        })),
+      updateTask: (id, updates) =>
+        set((state) => ({
+          tasks: state.tasks.map((task) =>
+            task.id === id
+              ? {
+                  ...task,
+                  ...updates,
+                  dueDate: updates.dueDate !== undefined
+                    ? (updates.dueDate ? new Date(updates.dueDate).toISOString() : null)
+                    : task.dueDate,
+                }
+              : task
+          ),
         })),
       toggleTask: (id) =>
         set((state) => ({

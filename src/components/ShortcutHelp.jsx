@@ -86,6 +86,7 @@ const CloseButton = styled.button`
 
 const shortcuts = [
   { description: 'Quick add task', keys: ['q'] },
+  { description: 'Search tasks', keys: ['/'] },
   { description: 'Submit form', keys: ['⌘', 'Enter'] },
   { description: 'Complete selected task', keys: ['x'] },
   { description: 'Complete all tasks', keys: ['⌥', 'Shift', 'x'] },

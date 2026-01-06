@@ -37,12 +37,16 @@ export const App = () => {
 
   useKeyboardShortcuts({
     onQuickAdd: () => {
-      const input = document.querySelector('input[type="text"]');
+      const input = document.querySelector('input[aria-label="New task title"]');
       input?.focus();
     },
     onSubmit: () => {
       const form = document.querySelector('form');
       form?.requestSubmit();
+    },
+    onSearch: () => {
+      const searchInput = document.querySelector('input[aria-label="Search tasks"]');
+      searchInput?.focus();
     },
   });
 

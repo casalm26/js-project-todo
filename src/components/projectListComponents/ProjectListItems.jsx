@@ -30,6 +30,7 @@ export const ProjectListItems = () => {
 
   const handleProjectClick = (projectId) => {
     setFilter('project', projectId);
+    setFilter('dateView', 'all');
     if (window.innerWidth <= 768) toggleSidebar();
   };
 
@@ -45,7 +46,7 @@ export const ProjectListItems = () => {
       <ProjectListItem
         name="All tasks"
         count={tasks.length}
-        active={!activeFilters.project}
+        active={!activeFilters.project && activeFilters.dateView === 'all'}
         onClick={() => handleProjectClick(null)}
       />
       {projects.map((project) => {
