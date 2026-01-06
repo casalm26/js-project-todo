@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import styled from 'styled-components';
 import { useUiStore } from '../store/useUiStore';
-import { FiSun, FiMoon, FiMenu, FiSearch, FiX } from 'react-icons/fi';
+import { FiSun, FiMoon, FiMenu, FiSearch, FiX, FiList, FiColumns } from 'react-icons/fi';
 import { device } from '../styles/media';
 
 const HeaderContainer = styled.header`
@@ -117,8 +117,34 @@ const HamburgerButton = styled(IconButton)`
   }
 `;
 
+const ViewToggle = styled.div`
+  display: flex;
+  background-color: ${({ theme }) => theme.colors.background};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  padding: 0.125rem;
+`;
+
+const ViewButton = styled.button`
+  background: ${({ $active, theme }) => ($active ? theme.colors.surface : 'none')};
+  border: none;
+  color: ${({ theme, $active }) =>
+    $active ? theme.colors.primary : theme.colors.textSecondary};
+  cursor: pointer;
+  padding: 0.375rem 0.5rem;
+  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all ${({ theme }) => theme.transitions.default};
+  box-shadow: ${({ $active }) => ($active ? '0 1px 2px rgba(0,0,0,0.1)' : 'none')};
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.text};
+  }
+`;
+
 export const Header = () => {
-  const { isDarkMode, toggleTheme, toggleSidebar, searchQuery, setSearchQuery } = useUiStore();
+  const { isDarkMode, toggleTheme, toggleSidebar, searchQuery, setSearchQuery, viewMode, setViewMode } = useUiStore();
   const searchInputRef = useRef(null);
 
   const handleClearSearch = () => {
@@ -148,6 +174,22 @@ export const Header = () => {
         )}
       </SearchContainer>
       <Controls>
+        <ViewToggle>
+          <ViewButton
+            $active={viewMode === 'list'}
+            onClick={() => setViewMode('list')}
+            aria-label="List view"
+          >
+            <FiList size={16} />
+          </ViewButton>
+          <ViewButton
+            $active={viewMode === 'board'}
+            onClick={() => setViewMode('board')}
+            aria-label="Board view"
+          >
+            <FiColumns size={16} />
+          </ViewButton>
+        </ViewToggle>
         <IconButton onClick={toggleTheme} aria-label="Toggle theme">
           {isDarkMode ? <FiSun size={20} /> : <FiMoon size={20} />}
         </IconButton>

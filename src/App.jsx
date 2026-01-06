@@ -1,10 +1,10 @@
 import { ThemeProvider } from 'styled-components';
 import { useUiStore } from './store/useUiStore';
-import { useTaskStore } from './store/useTaskStore';
 import { lightTheme, darkTheme } from './styles/theme';
 import { GlobalStyles } from './styles/GlobalStyles';
 import { Header } from './components/Header';
 import { TaskList } from './components/TaskList';
+import { BoardView } from './components/BoardView';
 import { AddTask } from './components/AddTask';
 import { ProjectList } from './components/ProjectList';
 import { ShortcutHelp } from './components/ShortcutHelp';
@@ -32,7 +32,7 @@ const Content = styled.div`
 `;
 
 export const App = () => {
-  const { isDarkMode } = useUiStore();
+  const { isDarkMode, viewMode } = useUiStore();
   const theme = isDarkMode ? darkTheme : lightTheme;
 
   useKeyboardShortcuts({
@@ -59,7 +59,7 @@ export const App = () => {
           <ProjectList />
           <Content>
             <AddTask />
-            <TaskList />
+            {viewMode === 'board' ? <BoardView /> : <TaskList />}
           </Content>
         </Main>
         <ShortcutHelp />
