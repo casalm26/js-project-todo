@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { useTaskStore } from '../store/useTaskStore';
 import { useUiStore } from '../store/useUiStore';
-import { FiCheck, FiTrash2, FiEdit2, FiX } from 'react-icons/fi';
+import { FiCheck, FiTrash2, FiEdit2 } from 'react-icons/fi';
 import { formatDueDate, formatCreatedDate, isTaskOverdue } from '../utils/dateUtils';
 
 const PRIORITY_COLORS = {

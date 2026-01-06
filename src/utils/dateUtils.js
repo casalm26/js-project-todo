@@ -1,4 +1,4 @@
-import { formatDistanceToNow, isPast, startOfDay, isToday, addDays, isBefore, isAfter } from 'date-fns';
+import { formatDistanceToNow, isPast, startOfDay, isToday, addDays, isBefore } from 'date-fns';
 
 /**
  * Formats a due date for display
